@@ -2,6 +2,10 @@
 // 说明：所有内容型数据（品种/品类/文章/轮播）均带 status，前台只读取 published。
 generator client {
   provider = "prisma-client-js"
+  // EdgeOne 云函数（Node 20）运行在 RHEL + OpenSSL 1.1 环境，
+  // 构建机是 OpenSSL 3.0，必须显式带上运行时的引擎，否则报
+  // "could not locate the Query Engine for runtime rhel-openssl-1.1.x"
+  binaryTargets = ["native", "rhel-openssl-1.1.x"]
 }
 
 datasource db {
