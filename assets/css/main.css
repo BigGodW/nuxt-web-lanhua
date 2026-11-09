@@ -1,0 +1,493 @@
+/* ==========================================================
+   九畹 · 国兰清赏  全局样式
+   色彩：宣纸底 / 墨绿 / 朱砂 / 赭金
+   ========================================================== */
+
+:root {
+  --paper: #f8f4ea;
+  --paper-deep: #efe6d4;
+  --ink: #1e2a24;
+  --ink-soft: #46544c;
+  --jade: #2f4a3f;
+  --jade-deep: #1f3329;
+  --cinnabar: #a63f32;
+  --gold: #b99a5b;
+
+  /* Vant 主题色对齐 */
+  --van-primary-color: #2f4a3f;
+  --van-success-color: #5c7a6b;
+  --van-danger-color: #a63f32;
+  --van-text-color: #1e2a24;
+  --van-text-color-2: #46544c;
+  --van-text-color-3: #7a857e;
+  --van-border-color: #e3dbc9;
+  --van-background: #f8f4ea;
+  --van-background-2: #fcfaf4;
+  --van-tabs-bottom-bar-color: #a63f32;
+  --van-tabs-nav-background: transparent;
+  --van-tab-active-text-color: #1e2a24;
+  --van-tab-text-color: #7a857e;
+  --van-search-background: transparent;
+  --van-cell-background: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 宣纸纹理：细密噪点 + 淡淡晕染 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: radial-gradient(circle at 15% 20%, rgba(185, 154, 91, 0.12), transparent 42%),
+    radial-gradient(circle at 85% 6%, rgba(47, 74, 63, 0.09), transparent 38%),
+    radial-gradient(circle at 65% 95%, rgba(166, 63, 50, 0.06), transparent 46%);
+}
+
+#__nuxt {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: rgba(166, 63, 50, 0.18);
+}
+
+/* ---------- 排版 ---------- */
+.font-song {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', STSong, SimSun, serif;
+}
+
+.tracking-cn-wide {
+  letter-spacing: 0.16em;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.3em;
+}
+
+/* ---------- 印章 ---------- */
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cinnabar);
+  color: #fdf6e9;
+  border-radius: 6px;
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  letter-spacing: 0.05em;
+  box-shadow: inset 0 0 0 2px rgba(253, 246, 233, 0.55), 0 6px 14px -8px rgba(138, 47, 37, 0.9);
+  user-select: none;
+}
+
+.seal-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cinnabar);
+  border: 1px solid rgba(166, 63, 50, 0.55);
+  border-radius: 6px;
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+}
+
+/* ---------- 装饰线 ---------- */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(185, 154, 91, 0.9);
+}
+
+.ornament::before,
+.ornament::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(185, 154, 91, 0.65), transparent);
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(185, 154, 91, 0), rgba(185, 154, 91, 0.55), rgba(185, 154, 91, 0));
+}
+
+/* 回纹边框 */
+.pattern-frame {
+  position: relative;
+}
+
+.pattern-frame::before,
+.pattern-frame::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(185, 154, 91, 0.75);
+  pointer-events: none;
+}
+
+.pattern-frame::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.pattern-frame::after {
+  right: -1px;
+  bottom: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+/* ---------- 卡片 ---------- */
+.paper-card {
+  background: linear-gradient(180deg, rgba(255, 253, 247, 0.96), rgba(250, 246, 237, 0.94));
+  border: 1px solid rgba(227, 219, 201, 0.9);
+  box-shadow: 0 10px 30px -22px rgba(31, 42, 36, 0.6);
+}
+
+.ink-wash {
+  background: linear-gradient(140deg, #24382f 0%, #2f4a3f 45%, #3d5a4c 100%);
+  color: #f3efe2;
+}
+
+/* ---------- 正文富文本 ---------- */
+.article-body {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', STSong, SimSun, serif;
+  font-size: 1.0625rem;
+  line-height: 2.05;
+  color: #2c3730;
+}
+
+.article-body p {
+  margin: 0 0 1.35em;
+  text-align: justify;
+}
+
+.article-body h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--jade-deep);
+  margin: 2.2em 0 0.9em;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--cinnabar);
+  letter-spacing: 0.08em;
+}
+
+.article-body h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--jade);
+  margin: 1.8em 0 0.7em;
+  letter-spacing: 0.06em;
+}
+
+.article-body blockquote {
+  margin: 1.6em 0;
+  padding: 1rem 1.25rem;
+  background: rgba(239, 230, 212, 0.55);
+  border-left: 3px solid rgba(185, 154, 91, 0.7);
+  color: #4a5751;
+  font-size: 0.975rem;
+}
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 1.35em 1.2em;
+  padding-left: 0.4em;
+}
+
+.article-body ul {
+  list-style: none;
+}
+
+.article-body ul li {
+  position: relative;
+  padding-left: 1rem;
+  margin-bottom: 0.6em;
+}
+
+.article-body ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.85em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.article-body ol {
+  list-style: decimal;
+}
+
+.article-body ol li {
+  margin-bottom: 0.6em;
+}
+
+.article-body img {
+  max-width: 100%;
+  border-radius: 2px;
+  margin: 1.6em auto;
+  display: block;
+}
+
+.article-body a {
+  color: var(--cinnabar);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-body strong {
+  color: var(--jade-deep);
+  font-weight: 600;
+}
+
+/* ---------- 过渡 ---------- */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-leave-to {
+  opacity: 0;
+}
+
+/* ---------- Vant 细节微调 ---------- */
+.van-tabs__nav {
+  background: transparent;
+}
+
+.van-tab {
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  letter-spacing: 0.1em;
+}
+
+.van-button--primary {
+  background: var(--jade);
+  border-color: var(--jade);
+}
+
+.van-button--danger {
+  background: var(--cinnabar);
+  border-color: var(--cinnabar);
+}
+
+.van-cell {
+  font-size: 0.9rem;
+}
+
+.van-cell::after {
+  border-color: rgba(227, 219, 201, 0.7);
+}
+
+.van-field__label {
+  color: var(--ink-soft);
+}
+
+.van-popup {
+  background: #fcfaf4;
+}
+
+.van-empty__description {
+  color: var(--ink-light, #7a857e);
+  font-size: 0.85rem;
+}
+
+/* ---------- 后台表单 ---------- */
+.admin-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.4rem;
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.admin-label em {
+  font-style: normal;
+  color: var(--cinnabar);
+}
+
+.admin-input,
+.admin-select,
+.admin-textarea {
+  width: 100%;
+  border: 1px solid #e3dbc9;
+  background: #fcfaf4;
+  padding: 0.55rem 0.7rem;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-input:focus,
+.admin-select:focus,
+.admin-textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(185, 154, 91, 0.12);
+}
+
+.admin-input::placeholder,
+.admin-textarea::placeholder {
+  color: #a9b0aa;
+}
+
+.admin-textarea {
+  resize: vertical;
+  min-height: 90px;
+  font-family: inherit;
+}
+
+.admin-select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #8e8f86 50%),
+    linear-gradient(135deg, #8e8f86 50%, transparent 50%);
+  background-position: calc(100% - 15px) 55%, calc(100% - 10px) 55%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 1.8rem;
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--jade);
+  color: #f8f4ea;
+  border: 1px solid var(--jade);
+  padding: 0.5rem 1rem;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-btn:hover {
+  background: var(--jade-deep);
+  border-color: var(--jade-deep);
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid #dcd3c0;
+  padding: 0.4rem 0.75rem;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--jade-deep);
+}
+
+.admin-btn-ghost:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.admin-btn-danger {
+  background: transparent;
+  border: 1px solid rgba(166, 63, 50, 0.35);
+  color: var(--cinnabar);
+  padding: 0.35rem 0.7rem;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-danger:hover {
+  background: rgba(166, 63, 50, 0.08);
+  border-color: var(--cinnabar);
+}
+
+.admin-th {
+  padding: 0.7rem 0.75rem;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #7a857e;
+  background: rgba(239, 230, 212, 0.45);
+  white-space: nowrap;
+}
+
+.admin-td {
+  padding: 0.7rem 0.75rem;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  vertical-align: middle;
+  border-top: 1px solid rgba(227, 219, 201, 0.65);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.45rem;
+  font-size: 10.5px;
+  border: 1px solid;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.status-published {
+  color: #2f6b4f;
+  border-color: rgba(47, 107, 79, 0.3);
+  background: rgba(47, 107, 79, 0.07);
+}
+
+.status-draft {
+  color: #a07b32;
+  border-color: rgba(185, 154, 91, 0.4);
+  background: rgba(185, 154, 91, 0.08);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(47, 74, 63, 0.25);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
