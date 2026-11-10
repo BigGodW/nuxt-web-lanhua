@@ -49,6 +49,25 @@ export default defineNuxtConfig({
     compressPublicAssets: true
   },
 
+  // 缓存策略：服务端有内存缓存，这里再让 CDN/浏览器配合
+  // - 前台只读接口：CDN 缓存 60s，过期后先返回旧内容再回源（SWR）
+  // - 后台与鉴权：一律 no-store，避免把登录态或后台数据缓存出去
+  routeRules: {
+    '/api/admin/**': { headers: { 'cache-control': 'no-store' } },
+    '/api/auth/**': { headers: { 'cache-control': 'no-store' } },
+    '/api/image-proxy': { headers: { 'cache-control': 'public, max-age=86400, s-maxage=604800' } },
+    '/api/qrcode': { headers: { 'cache-control': 'public, max-age=3600, s-maxage=86400' } },
+    '/api/**': {
+      headers: { 'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' }
+    },
+    '/admin/**': { headers: { 'cache-control': 'no-store' } },
+    '/': { headers: { 'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' } },
+    '/orchids/**': { headers: { 'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' } },
+    '/articles/**': { headers: { 'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' } },
+    '/categories/**': { headers: { 'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' } },
+    '/about': { headers: { 'cache-control': 'public, max-age=0, s-maxage=300, stale-while-revalidate=600' } }
+  },
+
   experimental: {
     payloadExtraction: false
   }

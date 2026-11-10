@@ -5,7 +5,14 @@ generator client {
   // EdgeOne 云函数（Node 20）运行在 RHEL + OpenSSL 1.1 环境，
   // 构建机是 OpenSSL 3.0，必须显式带上运行时的引擎，否则报
   // "could not locate the Query Engine for runtime rhel-openssl-1.1.x"
-  binaryTargets = ["native", "rhel-openssl-1.1.x"]
+  //
+  // 本地开发（Windows/macOS）：保留 "native"，否则客户端找不到本机引擎，
+  //   报 "could not locate the Query Engine for runtime windows"。
+  // 提交给 EdgeOne 构建时：可只留 ["rhel-openssl-1.1.x"]，产物小 21MB。
+  // 切换后必须重跑 generate：停掉 nuxt dev → npx prisma generate → npm run dev
+  // binaryTargets = ["native", "rhel-openssl-1.1.x"]
+  // 部署到腾讯云配置
+  // binaryTargets = [ "rhel-openssl-1.1.x"]
 }
 
 datasource db {

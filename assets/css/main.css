@@ -33,6 +33,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* iOS 横屏时不要自动放大字号 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -41,6 +44,16 @@ body {
   font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* 移动端点按不要出现灰色高亮块，交互反馈交给 :active / hover 样式 */
+  -webkit-tap-highlight-color: transparent;
+  /* 长英文、长链接、连续数字在窄屏不撑破布局 */
+  overflow-wrap: break-word;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 /* 宣纸纹理：细密噪点 + 淡淡晕染 */
@@ -63,6 +76,48 @@ body::before {
 
 ::selection {
   background: rgba(166, 63, 50, 0.18);
+}
+
+/* ---------- 移动端适配工具类 ---------- */
+
+/* 品类筛选条、标签栏这类横向滚动区域：可滑动但不显示滚动条 */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* iPhone 刘海屏 / 底部横条安全区 */
+.safe-b {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* ---------- 移动端底部标签栏 ---------- */
+/* 栏高固定，安全区单独加在导航容器上，避免内容被横条压住 */
+.tabbar {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tabbar-inner {
+  height: 3.25rem;
+}
+
+/* 有底部标签栏时，页脚底部留出「栏高 + 安全区 + 呼吸位」，内容才不会被遮挡 */
+.footer-tabbar-space {
+  padding-bottom: calc(3.25rem + 1.25rem + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .footer-tabbar-space {
+    padding-bottom: 4rem;
+  }
+}
+
+.safe-t {
+  padding-top: max(0px, env(safe-area-inset-top));
 }
 
 /* ---------- 排版 ---------- */
@@ -257,6 +312,33 @@ body::before {
 .article-body strong {
   color: var(--jade-deep);
   font-weight: 600;
+}
+
+/* 小屏正文：字号与行高收敛，标题缩小，避免长文在手机上一屏字太少 */
+@media (max-width: 767px) {
+  .article-body {
+    font-size: 1rem;
+    line-height: 1.95;
+  }
+
+  .article-body h2 {
+    font-size: 1.2rem;
+    margin: 1.9em 0 0.8em;
+  }
+
+  .article-body h3 {
+    font-size: 1.05rem;
+  }
+
+  .article-body blockquote {
+    padding: 0.85rem 1rem;
+    font-size: 0.9375rem;
+  }
+
+  .article-body ul,
+  .article-body ol {
+    margin-left: 1em;
+  }
 }
 
 /* ---------- 过渡 ---------- */

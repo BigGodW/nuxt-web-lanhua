@@ -5,5 +5,7 @@
       <slot />
     </main>
     <SiteFooter />
+    <!-- 手机端底部标签栏（桌面隐藏） -->
+    <MobileTabBar />
   </div>
 </template>

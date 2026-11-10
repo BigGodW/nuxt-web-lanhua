@@ -4,8 +4,9 @@
       v-if="src && !failed"
       :src="url"
       :alt="alt"
-      loading="lazy"
-      decoding="async"
+      :loading="priority ? 'eager' : 'lazy'"
+      :fetchpriority="priority ? 'high' : undefined"
+      :decoding="priority ? 'sync' : 'async'"
       class="h-full w-full object-cover transition-transform duration-700 ease-out"
       :class="imgClass"
       @error="failed = true"
@@ -34,13 +35,17 @@ const props = defineProps({
   ratio: { type: String, default: '4 / 5' },
   imgClass: { type: String, default: '' },
   // 期望的显示宽度（px），CDN 图片会按此宽度裁剪，避免下载原图
-  w: { type: Number, default: 0 }
+  // 兼容两种写法：:w="200" 与 w="200"（页面里字符串更常见）
+  w: { type: [Number, String], default: 0 },
+  // 首屏图片设为 true：立即加载 + 高优先级，其余保持懒加载
+  priority: { type: Boolean, default: false }
 })
 
 const { img } = useImage()
 
 const failed = ref(false)
-const url = computed(() => img(props.src, props.w))
+const width = computed(() => Number(props.w) || 0)
+const url = computed(() => img(props.src, width.value))
 
 watch(
   () => props.src,

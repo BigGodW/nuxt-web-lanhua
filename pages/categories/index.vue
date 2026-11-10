@@ -6,8 +6,8 @@
       subtitle="春兰、蕙兰、建兰、墨兰、寒兰、春剑、莲瓣兰——七大品类，各有法度。"
     />
 
-    <section class="container py-12 md:py-16">
-      <div class="grid gap-8 md:grid-cols-2 md:gap-x-10 md:gap-y-14">
+    <section class="container py-8 md:py-16">
+      <div class="grid gap-6 md:grid-cols-2 md:gap-x-10 md:gap-y-14">
         <NuxtLink
           v-for="(category, index) in categories || []"
           :key="category.id"
@@ -19,22 +19,22 @@
             <span class="absolute left-4 top-4 font-song text-[12px] tracking-[0.25em] text-paper/70">
               {{ cnNumber(index) }}
             </span>
-            <div class="absolute inset-x-5 bottom-4 flex items-end justify-between">
-              <div>
-                <p class="font-song text-[26px] tracking-[0.2em] text-paper">{{ category.name }}</p>
+            <div class="absolute inset-x-4 bottom-3.5 flex items-end justify-between gap-3 md:inset-x-5 md:bottom-4">
+              <div class="min-w-0">
+                <p class="font-song text-[22px] tracking-[0.18em] text-paper md:text-[26px] md:tracking-[0.2em]">{{ category.name }}</p>
                 <p class="mt-1 text-[11px] tracking-[0.15em] text-paper/65">{{ category.subtitle }}</p>
               </div>
-              <span class="border border-paper/40 px-2 py-0.5 text-[10px] tracking-[0.1em] text-paper/80">
+              <span class="shrink-0 border border-paper/40 px-2 py-0.5 text-[10px] tracking-[0.1em] text-paper/80">
                 {{ category._count?.orchids || 0 }} 品
               </span>
             </div>
           </SmartImage>
 
-          <p class="mt-4 line-clamp-2 text-[13px] leading-7 text-ink-soft/75">
+          <p class="mt-3 line-clamp-2 text-[12.5px] leading-6 text-ink-soft/75 md:mt-4 md:text-[13px] md:leading-7">
             {{ category.description }}
           </p>
 
-          <span class="mt-3 inline-flex items-center gap-2 text-[11px] tracking-[0.2em] text-gold-deep transition-colors group-hover:text-cinnabar">
+          <span class="mt-2.5 inline-flex items-center gap-2 text-[11px] tracking-[0.2em] text-gold-deep transition-colors group-hover:text-cinnabar">
             进入品类
             <van-icon name="arrow" size="10" class="transition-transform group-hover:translate-x-1" />
           </span>

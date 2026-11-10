@@ -6,12 +6,12 @@
       subtitle="依品类检索国兰名品，观其瓣型、花期、香气与产地。一草一木，皆有来历。"
     />
 
-    <section class="container py-12 md:py-16">
+    <section class="container py-8 md:py-16">
       <!-- 筛选 -->
-      <div class="flex flex-col gap-5 border-b border-[#E3DBC9]/70 pb-6 md:flex-row md:items-center md:justify-between">
-        <div class="-mx-1 flex flex-nowrap items-center gap-1 overflow-x-auto px-1 pb-1 md:flex-wrap md:overflow-visible md:pb-0">
+      <div class="flex flex-col gap-4 border-b border-[#E3DBC9]/70 pb-4 md:flex-row md:items-center md:justify-between md:gap-5 md:pb-6">
+        <div class="no-scrollbar -mx-1 flex flex-nowrap items-center gap-1 overflow-x-auto px-1 pb-1 md:flex-wrap md:overflow-visible md:pb-0">
           <button
-            class="shrink-0 border px-4 py-2 font-song text-[13px] tracking-[0.12em] transition-colors"
+            class="shrink-0 border px-3.5 py-1.5 font-song text-[12.5px] tracking-[0.1em] transition-colors md:px-4 md:py-2.5 md:text-[13px] md:tracking-[0.12em]"
             :class="!route.query.category ? 'border-jade-deep bg-jade-deep text-paper' : 'border-[#E3DBC9] text-ink-soft hover:border-gold'"
             @click="setQuery({ category: undefined, page: undefined })"
           >
@@ -20,7 +20,7 @@
           <button
             v-for="category in categories || []"
             :key="category.id"
-            class="shrink-0 border px-4 py-2 font-song text-[13px] tracking-[0.12em] transition-colors"
+            class="shrink-0 border px-3.5 py-1.5 font-song text-[12.5px] tracking-[0.1em] transition-colors md:px-4 md:py-2.5 md:text-[13px] md:tracking-[0.12em]"
             :class="
               route.query.category === category.slug
                 ? 'border-jade-deep bg-jade-deep text-paper'
@@ -38,19 +38,19 @@
             v-model="keyword"
             type="search"
             placeholder="搜索品种、别名或标签"
-            class="w-full border border-[#E3DBC9] bg-paper-light/60 py-2.5 pl-9 pr-3 text-[13px] text-ink outline-none transition-colors placeholder:text-ink-light/60 focus:border-gold"
+            class="w-full border border-[#E3DBC9] bg-paper-light/60 py-2 pl-9 pr-3 text-[13px] text-ink outline-none transition-colors placeholder:text-ink-light/60 focus:border-gold md:py-2.5"
             @input="onSearch"
           />
         </div>
       </div>
 
-      <div class="mt-5 flex items-center justify-between text-[11px] tracking-[0.1em] text-ink-light">
+      <div class="mt-4 flex items-center justify-between text-[11px] tracking-[0.1em] text-ink-light md:mt-5">
         <span>共 {{ data?.total || 0 }} 个品种</span>
         <span v-if="route.query.keyword" class="text-cinnabar/70">关键词：{{ route.query.keyword }}</span>
       </div>
 
       <!-- 列表 -->
-      <div v-if="pending" class="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+      <div v-if="pending" class="mt-6 grid grid-cols-2 gap-x-3 gap-y-6 md:mt-8 md:grid-cols-3 md:gap-x-6 md:gap-y-10 lg:grid-cols-4">
         <div v-for="index in 8" :key="index" class="animate-pulse">
           <div class="aspect-[4/5] bg-paper-deep/70" />
           <div class="mt-3 h-3 w-2/3 bg-paper-deep/70" />
@@ -58,13 +58,13 @@
         </div>
       </div>
 
-      <div v-else-if="data?.list?.length" class="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+      <div v-else-if="data?.list?.length" class="mt-6 grid grid-cols-2 gap-x-3 gap-y-6 md:mt-8 md:grid-cols-3 md:gap-x-6 md:gap-y-10 lg:grid-cols-4">
         <OrchidCard v-for="orchid in data.list" :key="orchid.id" :orchid="orchid" />
       </div>
 
       <EmptyState v-else text="未找到相关兰草" hint="换个关键词，或选择其他品类看看" />
 
-      <div class="mt-14">
+      <div class="mt-9 md:mt-14">
         <Pager :page="data?.page || 1" :total-pages="data?.totalPages || 1" @change="changePage" />
       </div>
     </section>
@@ -77,17 +77,19 @@ const router = useRouter()
 
 const keyword = ref(String(route.query.keyword || ''))
 
-const { data: categories } = await useFetch('/api/categories', { key: 'categories-list' })
-
-const { data, pending } = await useFetch('/api/orchids', {
-  key: 'orchid-list',
-  query: computed(() => ({
-    page: route.query.page || 1,
-    pageSize: 12,
-    category: route.query.category || undefined,
-    keyword: route.query.keyword || undefined
-  }))
-})
+// 品类与列表互不依赖，并行发起，避免两次串行等待
+const [{ data: categories }, { data, pending }] = await Promise.all([
+  useFetch('/api/categories', { key: 'categories-list' }),
+  useFetch('/api/orchids', {
+    key: 'orchid-list',
+    query: computed(() => ({
+      page: route.query.page || 1,
+      pageSize: 12,
+      category: route.query.category || undefined,
+      keyword: route.query.keyword || undefined
+    }))
+  })
+])
 
 function setQuery(patch) {
   const query = { ...route.query, ...patch }

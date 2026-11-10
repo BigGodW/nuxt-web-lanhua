@@ -13,14 +13,14 @@
 
     <!-- 主导航 -->
     <div class="border-b border-[#E3DBC9]/70 bg-paper/90 backdrop-blur-md">
-      <div class="container flex h-16 items-center justify-between md:h-20">
+      <div class="container flex h-14 items-center justify-between md:h-20">
         <NuxtLink to="/" class="flex items-center gap-3">
-          <span class="seal h-10 w-10 text-base md:h-11 md:w-11 md:text-lg">兰</span>
+          <span class="seal h-9 w-9 text-[13px] md:h-11 md:w-11 md:text-lg">兰</span>
           <span class="leading-none">
-            <span class="block font-song text-xl tracking-[0.3em] text-jade-deep md:text-2xl">
+            <span class="block font-song text-lg tracking-[0.24em] text-jade-deep md:text-2xl md:tracking-[0.3em]">
               {{ site.siteName || '九畹' }}
             </span>
-            <span class="mt-1.5 block text-[9px] tracking-[0.32em] text-gold-deep/70">GUOLAN · ORCHID</span>
+            <span class="mt-1 block text-[9px] tracking-[0.26em] text-gold-deep/70 md:mt-1.5 md:text-[10px] md:tracking-[0.3em]">GUOLAN · ORCHID</span>
           </span>
         </NuxtLink>
 
@@ -41,11 +41,11 @@
         </nav>
 
         <button
-          class="flex h-9 w-9 items-center justify-center border border-gold/40 text-jade-deep md:hidden"
+          class="flex h-11 w-11 items-center justify-center border border-gold/40 text-jade-deep active:bg-paper-deep/60 md:hidden"
           aria-label="打开菜单"
           @click="menuOpen = true"
         >
-          <van-icon name="bars" size="18" />
+          <van-icon name="bars" size="20" />
         </button>
       </div>
     </div>
@@ -54,19 +54,23 @@
     <van-popup
       v-model:show="menuOpen"
       position="right"
-      :style="{ width: '76%', height: '100%' }"
+      :style="{ width: 'min(88%, 20rem)', height: '100%' }"
       class="bg-paper"
     >
-      <div class="flex h-full flex-col px-7 py-8">
+      <div class="flex h-full flex-col px-6 pb-6 pt-7 safe-b">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
             <span class="seal h-10 w-10 text-base">兰</span>
             <div>
               <p class="font-song text-lg tracking-[0.25em] text-jade-deep">{{ site.siteName || '九畹' }}</p>
-              <p class="mt-1 text-[9px] tracking-[0.3em] text-gold-deep/70">GUOLAN · ORCHID</p>
+              <p class="mt-1 text-[10px] tracking-[0.3em] text-gold-deep/70">GUOLAN · ORCHID</p>
             </div>
           </div>
-          <button class="text-ink-light" aria-label="关闭菜单" @click="menuOpen = false">
+          <button
+            class="-mr-2 flex h-11 w-11 items-center justify-center text-ink-light"
+            aria-label="关闭菜单"
+            @click="menuOpen = false"
+          >
             <van-icon name="cross" size="20" />
           </button>
         </div>

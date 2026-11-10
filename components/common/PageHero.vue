@@ -7,14 +7,14 @@
     <div class="pointer-events-none absolute -left-16 -top-24 h-64 w-64 rounded-full border border-paper/10" />
     <div class="pointer-events-none absolute -left-8 -top-16 h-40 w-40 rounded-full border border-paper/10" />
 
-    <div class="container relative py-12 md:py-16">
+    <div class="container relative py-7 md:py-16">
       <div class="flex items-end justify-between gap-8">
         <div>
           <p v-if="en" class="text-[10px] uppercase tracking-[0.42em] text-gold-light/70">{{ en }}</p>
-          <h1 class="mt-3 font-song text-[28px] leading-tight tracking-[0.22em] text-paper md:text-[36px]">
+          <h1 class="mt-2 font-song text-[23px] leading-tight tracking-[0.16em] text-paper md:mt-3 md:text-[36px] md:tracking-[0.22em]">
             {{ title }}
           </h1>
-          <p v-if="subtitle" class="mt-4 max-w-2xl text-[13px] leading-7 text-paper/60">{{ subtitle }}</p>
+          <p v-if="subtitle" class="mt-3 max-w-2xl text-[12.5px] leading-6 text-paper/60 md:mt-4 md:text-[13px] md:leading-7">{{ subtitle }}</p>
           <slot />
         </div>
 

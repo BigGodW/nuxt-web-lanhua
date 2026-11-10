@@ -29,7 +29,7 @@
       >
         <div class="flex items-center gap-3">
           <button
-            class="flex h-9 w-9 items-center justify-center border border-[#DCD3C0] text-jade-deep lg:hidden"
+            class="flex h-11 w-11 items-center justify-center border border-[#DCD3C0] text-jade-deep active:bg-paper-deep/60 lg:hidden"
             aria-label="打开菜单"
             @click="drawerOpen = true"
           >
@@ -62,7 +62,7 @@
               <p class="text-[10px] text-ink-light">管理员</p>
             </div>
             <button
-              class="ml-1 text-ink-light transition-colors hover:text-cinnabar"
+              class="ml-1 flex h-9 w-9 items-center justify-center text-ink-light transition-colors hover:text-cinnabar"
               title="退出登录"
               @click="handleLogout"
             >
@@ -78,17 +78,17 @@
     </div>
 
     <!-- 移动端侧栏 -->
-    <van-popup v-model:show="drawerOpen" position="left" :style="{ width: '72%', height: '100%' }">
+    <van-popup v-model:show="drawerOpen" position="left" :style="{ width: 'min(80%, 18rem)', height: '100%' }">
       <div class="flex h-full flex-col bg-jade-deep">
         <div class="flex items-center justify-between px-5 py-6">
           <div class="flex items-center gap-3">
             <span class="seal h-9 w-9 text-sm">兰</span>
             <div>
               <p class="font-song text-[17px] tracking-[0.25em] text-paper">九畹</p>
-              <p class="mt-1 text-[9px] tracking-[0.24em] text-gold-light/50">ADMIN CONSOLE</p>
+              <p class="mt-1 text-[10px] tracking-[0.24em] text-gold-light/50">ADMIN CONSOLE</p>
             </div>
           </div>
-          <button class="text-paper/50" aria-label="关闭菜单" @click="drawerOpen = false">
+          <button class="-mr-2 flex h-11 w-11 items-center justify-center text-paper/50" aria-label="关闭菜单" @click="drawerOpen = false">
             <van-icon name="cross" size="18" />
           </button>
         </div>

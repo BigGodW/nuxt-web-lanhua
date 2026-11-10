@@ -11,10 +11,14 @@ export function getPaging(event, defaultSize = 12) {
 }
 
 /**
- * 一次事务内取列表与总数，返回前端直接可用的结构
+ * 列表 + 总数
+ *
+ * 用 Promise.all 而不是 $transaction：海外库单次往返 400ms+，
+ * 事务里的两条语句是串行的（实测 2 次往返 ≈ 2 倍等待），
+ * 列表页对一致性要求低，并发更划算。
  */
 export async function pagedList(model, { where, include, select, orderBy, page, pageSize, skip, take }) {
-  const [list, total] = await prisma.$transaction([
+  const [list, total] = await Promise.all([
     model.findMany({ where, include, select, orderBy, skip, take }),
     model.count({ where })
   ])

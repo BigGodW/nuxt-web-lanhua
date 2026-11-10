@@ -12,7 +12,7 @@
           <p class="font-song text-[15px] tracking-[0.14em] text-jade-deep">分享此{{ label }}</p>
           <p class="mt-1 line-clamp-1 text-[11px] text-ink-light">{{ title }}</p>
         </div>
-        <button class="text-ink-light hover:text-cinnabar" @click="show = false">
+        <button class="-mr-2 flex h-10 w-10 items-center justify-center text-ink-light hover:text-cinnabar" @click="show = false">
           <van-icon name="cross" size="16" />
         </button>
       </div>

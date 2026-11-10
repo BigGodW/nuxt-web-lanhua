@@ -2,7 +2,7 @@
   <div v-if="orchid">
     <!-- 面包屑 -->
     <div class="border-b border-[#E3DBC9]/60 bg-paper-light/40">
-      <div class="container flex items-center gap-2 py-3 text-[11px] tracking-[0.1em] text-ink-light">
+      <div class="container flex flex-wrap items-center gap-x-2 gap-y-1 py-3 text-[11px] tracking-[0.1em] text-ink-light">
         <NuxtLink to="/" class="hover:text-jade-deep">首页</NuxtLink>
         <span class="text-gold/60">/</span>
         <NuxtLink to="/orchids" class="hover:text-jade-deep">兰谱</NuxtLink>
@@ -15,8 +15,8 @@
       </div>
     </div>
 
-    <section class="container py-10 md:py-14">
-      <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] lg:gap-16">
+    <section class="container py-7 md:py-14">
+      <div class="grid gap-6 md:gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] lg:gap-16">
         <!-- 图 -->
         <div>
           <div class="pattern-frame p-2">
@@ -30,11 +30,11 @@
             </SmartImage>
           </div>
 
-          <div v-if="gallery.length > 1" class="mt-3 flex gap-3">
+          <div v-if="gallery.length > 1" class="no-scrollbar mt-3 flex gap-2.5 overflow-x-auto pb-1 md:flex-wrap md:gap-3 md:overflow-visible md:pb-0">
             <button
               v-for="(image, index) in gallery"
               :key="index"
-              class="h-16 w-16 overflow-hidden border transition-colors"
+              class="h-16 w-16 shrink-0 overflow-hidden border transition-colors"
               :class="activeImage === image ? 'border-cinnabar' : 'border-[#E3DBC9] hover:border-gold'"
               @click="activeImage = image"
             >
@@ -56,30 +56,30 @@
             <span class="text-[11px] tracking-[0.12em] text-ink-light">浏览量 {{ orchid.viewCount }}</span>
           </div>
 
-          <h1 class="mt-4 font-song text-[34px] leading-tight tracking-[0.18em] text-jade-deep md:text-[42px]">
+          <h1 class="mt-3 font-song text-[26px] leading-tight tracking-[0.12em] text-jade-deep md:mt-4 md:text-[42px] md:tracking-[0.18em]">
             {{ orchid.name }}
           </h1>
           <p v-if="orchid.alias" class="mt-2 font-song text-[13px] tracking-[0.18em] text-ink-light">
             又名 · {{ orchid.alias }}
           </p>
 
-          <div class="mt-5 flex items-center gap-3">
+          <div class="mt-4 flex items-center gap-3 md:mt-5">
             <span class="h-px w-10 bg-gold/60" />
             <span class="text-[10px] tracking-[0.3em] text-gold-deep/70">ORCHID PROFILE</span>
           </div>
 
-          <p v-if="orchid.summary" class="mt-5 font-song text-[14px] leading-8 text-ink-soft/90">
+          <p v-if="orchid.summary" class="mt-4 font-song text-[13.5px] leading-7 text-ink-soft/90 md:mt-5 md:text-[14px] md:leading-8">
             {{ orchid.summary }}
           </p>
 
-          <dl class="mt-7 grid grid-cols-2 gap-px overflow-hidden border border-[#E3DBC9] bg-[#E3DBC9]">
-            <div v-for="item in profile" :key="item.label" class="bg-paper-light/80 px-4 py-3.5">
+          <dl class="mt-5 grid grid-cols-2 gap-px overflow-hidden border border-[#E3DBC9] bg-[#E3DBC9] md:mt-7">
+            <div v-for="item in profile" :key="item.label" class="bg-paper-light/80 px-3.5 py-3 md:px-4 md:py-3.5">
               <dt class="text-[10px] tracking-[0.2em] text-ink-light">{{ item.label }}</dt>
               <dd class="mt-1 font-song text-[13px] text-jade-deep">{{ item.value }}</dd>
             </div>
           </dl>
 
-          <div v-if="orchid.tags?.length" class="mt-5 flex flex-wrap gap-2">
+          <div v-if="orchid.tags?.length" class="mt-4 flex flex-wrap gap-2 md:mt-5">
             <span
               v-for="tag in orchid.tags"
               :key="tag"
@@ -89,26 +89,28 @@
             </span>
           </div>
 
-          <div class="mt-8 flex flex-wrap items-center gap-3">
+          <!-- 手机端一行排布：两个文字按钮 + 一个图标按钮，省掉三行的高度 -->
+          <div class="mt-6 flex flex-wrap items-center gap-2 md:mt-8 md:gap-3">
             <NuxtLink
               to="/orchids"
-              class="inline-flex items-center gap-2 bg-jade-deep px-6 py-3 font-song text-[13px] tracking-[0.2em] text-paper transition-colors hover:bg-jade"
+              class="inline-flex h-11 flex-1 items-center justify-center gap-2 bg-jade-deep px-4 font-song text-[13px] tracking-[0.14em] text-paper transition-colors hover:bg-jade sm:flex-none sm:px-5 sm:tracking-[0.2em] md:h-auto md:py-3"
             >
               返回兰谱
             </NuxtLink>
             <NuxtLink
               v-if="orchid.category"
               :to="`/categories/${orchid.category.slug}`"
-              class="inline-flex items-center gap-2 border border-jade-deep/30 px-6 py-3 font-song text-[13px] tracking-[0.2em] text-jade-deep transition-colors hover:border-jade-deep"
+              class="inline-flex h-11 flex-1 items-center justify-center gap-2 border border-jade-deep/30 px-4 font-song text-[13px] tracking-[0.14em] text-jade-deep transition-colors hover:border-jade-deep sm:flex-none sm:px-5 sm:tracking-[0.2em] md:h-auto md:py-3"
             >
               更多{{ orchid.category.name }}
             </NuxtLink>
             <button
-              class="inline-flex items-center gap-2 border border-[#E3DBC9] px-6 py-3 font-song text-[13px] tracking-[0.2em] text-ink-soft transition-colors hover:border-cinnabar hover:text-cinnabar"
+              class="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-[#E3DBC9] text-ink-soft transition-colors hover:border-cinnabar hover:text-cinnabar sm:w-auto sm:gap-2 sm:px-5 md:h-auto md:py-3"
+              aria-label="分享此兰"
               @click="shareOpen = true"
             >
-              <van-icon name="share-o" size="13" />
-              分享此兰
+              <van-icon name="share-o" size="14" />
+              <span class="hidden font-song text-[13px] tracking-[0.2em] sm:inline">分享此兰</span>
             </button>
           </div>
         </div>
@@ -116,17 +118,17 @@
     </section>
 
     <!-- 详解 + 同类 -->
-    <section class="border-t border-[#E3DBC9]/60 bg-paper-light/40 py-14 md:py-16">
-      <div class="container grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px]">
+    <section class="border-t border-[#E3DBC9]/60 bg-paper-light/40 py-10 md:py-16">
+      <div class="container grid gap-8 md:gap-12 lg:grid-cols-[minmax(0,1fr)_280px]">
         <article>
           <SectionTitle title="品种详解" en="DETAILS & CULTIVATION" />
-          <div v-if="orchid.content" class="article-body mt-6" v-html="orchid.content" />
-          <p v-else class="mt-6 text-[13px] text-ink-light">该品种的详细介绍正在整理中。</p>
+          <div v-if="orchid.content" class="article-body mt-5 md:mt-6" v-html="orchid.content" />
+          <p v-else class="mt-5 text-[13px] text-ink-light md:mt-6">该品种的详细介绍正在整理中。</p>
         </article>
 
         <aside class="lg:border-l lg:border-[#E3DBC9] lg:pl-8">
           <p class="font-song text-[13px] tracking-[0.2em] text-jade-deep">同类品种</p>
-          <div class="mt-5 space-y-5">
+          <div class="mt-4 space-y-4 md:mt-5 md:space-y-5">
             <NuxtLink
               v-for="item in orchid.related"
               :key="item.id"

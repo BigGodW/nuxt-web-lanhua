@@ -1,7 +1,7 @@
 <template>
   <div v-if="article">
     <div class="border-b border-[#E3DBC9]/60 bg-paper-light/40">
-      <div class="container flex items-center gap-2 py-3 text-[11px] tracking-[0.1em] text-ink-light">
+      <div class="container flex flex-wrap items-center gap-x-2 gap-y-1 py-3 text-[11px] tracking-[0.1em] text-ink-light">
         <NuxtLink to="/" class="hover:text-jade-deep">首页</NuxtLink>
         <span class="text-gold/60">/</span>
         <NuxtLink to="/articles" class="hover:text-jade-deep">兰文</NuxtLink>
@@ -12,21 +12,21 @@
       </div>
     </div>
 
-    <article class="pb-16">
+    <article class="pb-10 md:pb-16">
       <!-- 标题区 -->
-      <header class="container max-w-3xl pb-10 pt-12 text-center md:pt-16">
+      <header class="container max-w-3xl pb-6 pt-8 text-center md:pb-10 md:pt-16">
         <p class="text-[10px] tracking-[0.4em] text-gold-deep/80">{{ article.category }}</p>
-        <h1 class="mt-4 font-song text-[26px] leading-[1.55] tracking-[0.08em] text-jade-deep md:text-[36px]">
+        <h1 class="mt-3 font-song text-[23px] leading-[1.5] tracking-[0.06em] text-jade-deep md:mt-4 md:text-[36px] md:leading-[1.55] md:tracking-[0.08em]">
           {{ article.title }}
         </h1>
-        <div class="mt-5 flex flex-wrap items-center justify-center gap-3 text-[11px] tracking-[0.12em] text-ink-light">
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] tracking-[0.12em] text-ink-light md:mt-5">
           <span>{{ article.author }}</span>
           <span class="h-2.5 w-px bg-gold/50" />
           <span>{{ formatDate(article.publishedAt) }}</span>
           <span class="h-2.5 w-px bg-gold/50" />
           <span>阅读 {{ article.viewCount }}</span>
         </div>
-        <div class="ornament mx-auto mt-8 max-w-xs text-[10px] tracking-[0.3em]">
+        <div class="ornament mx-auto mt-6 max-w-xs text-[10px] tracking-[0.3em] md:mt-8">
           <span>九畹</span>
         </div>
       </header>
@@ -37,21 +37,21 @@
       </div>
 
       <!-- 正文 -->
-      <div class="container mt-10 max-w-3xl">
-        <p v-if="article.summary" class="border-l-2 border-gold/60 bg-paper-light/60 px-5 py-4 font-song text-[13px] leading-7 text-ink-soft/85">
+      <div class="container mt-6 max-w-3xl md:mt-10">
+        <p v-if="article.summary" class="border-l-2 border-gold/60 bg-paper-light/60 px-4 py-3.5 font-song text-[12.5px] leading-6 text-ink-soft/85 md:px-5 md:py-4 md:text-[13px] md:leading-7">
           {{ article.summary }}
         </p>
 
-        <div v-if="article.content" class="article-body mt-9" v-html="article.content" />
-        <p v-else class="mt-9 text-[13px] text-ink-light">正文正在整理中。</p>
+        <div v-if="article.content" class="article-body mt-7 md:mt-9" v-html="article.content" />
+        <p v-else class="mt-7 text-[13px] text-ink-light md:mt-9">正文正在整理中。</p>
 
-        <div v-if="article.tags?.length" class="mt-10 flex flex-wrap gap-2 border-t border-[#E3DBC9]/70 pt-6">
+        <div v-if="article.tags?.length" class="mt-8 flex flex-wrap gap-2 border-t border-[#E3DBC9]/70 pt-5 md:mt-10 md:pt-6">
           <span v-for="tag in article.tags" :key="tag" class="border border-[#E3DBC9] px-3 py-1 text-[11px] text-ink-soft">
             # {{ tag }}
           </span>
         </div>
 
-        <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-4 md:mt-8">
           <NuxtLink to="/articles" class="inline-flex items-center gap-2 text-[12px] tracking-[0.2em] text-ink-soft hover:text-cinnabar">
             <van-icon name="arrow-left" size="12" />
             返回兰文
@@ -74,7 +74,7 @@
     </article>
 
     <!-- 上下篇 -->
-    <section class="border-t border-[#E3DBC9]/60 bg-paper-light/40 py-10">
+    <section class="border-t border-[#E3DBC9]/60 bg-paper-light/40 py-8 md:py-10">
       <div class="container grid gap-4 md:grid-cols-2">
         <NuxtLink
           v-if="article.prev"

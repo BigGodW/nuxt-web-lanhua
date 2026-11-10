@@ -1,7 +1,4 @@
-export default defineEventHandler(async () => {
-  return prisma.category.findMany({
-    where: { isActive: true },
-    orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
-    include: { _count: { select: { orchids: { where: { status: 'published' } } } } }
-  })
+export default defineEventHandler(() => {
+  // 品类清单变动极少，缓存 2 分钟
+  return loadCategories()
 })

@@ -1,51 +1,16 @@
 /**
  * 品种列表：?page=1&pageSize=12&category=chunlan&keyword=梅&featured=1
+ *
+ * 查询与缓存都在 server/utils/queries.js（预热共用同一套 key），这里只做参数解析。
  */
-export default defineEventHandler(async (event) => {
-  const { query, page, pageSize, skip, take } = getPaging(event, 12)
+export default defineEventHandler((event) => {
+  const { query, page, pageSize } = getPaging(event, 12)
 
-  const where = { status: 'published' }
-
-  if (query.category) {
-    where.category = { slug: String(query.category) }
-  }
-
-  if (query.featured === '1') {
-    where.isFeatured = true
-  }
-
-  if (query.keyword) {
-    const keyword = String(query.keyword).trim()
-    if (keyword) {
-      where.OR = [
-        { name: { contains: keyword, mode: 'insensitive' } },
-        { alias: { contains: keyword, mode: 'insensitive' } },
-        { summary: { contains: keyword, mode: 'insensitive' } },
-        { tags: { has: keyword } }
-      ]
-    }
-  }
-
-  return pagedList(prisma.orchid, {
-    where,
-    select: {
-      id: true,
-      name: true,
-      alias: true,
-      slug: true,
-      cover: true,
-      summary: true,
-      flowering: true,
-      fragrance: true,
-      difficulty: true,
-      tags: true,
-      isFeatured: true,
-      category: { select: { name: true, slug: true } }
-    },
-    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
+  return loadOrchidList({
     page,
     pageSize,
-    skip,
-    take
+    category: query.category ? String(query.category) : '',
+    keyword: query.keyword ? String(query.keyword) : '',
+    featured: query.featured ? String(query.featured) : ''
   })
 })

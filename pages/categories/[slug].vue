@@ -1,7 +1,7 @@
 <template>
   <div v-if="category">
     <PageHero :title="category.name" en="ORCHID CATEGORY" :subtitle="category.subtitle || ''">
-      <div class="mt-5 flex flex-wrap items-center gap-3 text-[11px] tracking-[0.12em] text-paper/50">
+      <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] tracking-[0.12em] text-paper/50 md:mt-5">
         <NuxtLink to="/categories" class="transition-colors hover:text-gold-light">全部品类</NuxtLink>
         <span class="text-gold/50">/</span>
         <span class="text-paper/80">{{ category.name }}</span>
@@ -9,15 +9,15 @@
       </div>
     </PageHero>
 
-    <section class="container py-12 md:py-16">
+    <section class="container py-8 md:py-16">
       <!-- 品类简介 -->
-      <div class="grid gap-8 border-b border-[#E3DBC9]/70 pb-10 md:grid-cols-[1fr_320px] md:gap-16">
+      <div class="grid gap-6 border-b border-[#E3DBC9]/70 pb-7 md:grid-cols-[1fr_320px] md:gap-16 md:pb-10">
         <div>
           <div class="flex items-center gap-3">
             <span class="seal h-8 w-8 text-[12px]">品</span>
             <p class="font-song text-[15px] tracking-[0.2em] text-jade-deep">品类小识</p>
           </div>
-          <p class="mt-4 font-song text-[14px] leading-8 text-ink-soft/90">
+          <p class="mt-3 font-song text-[13.5px] leading-7 text-ink-soft/90 md:mt-4 md:text-[14px] md:leading-8">
             {{ category.description || '该品类的介绍正在整理中。' }}
           </p>
         </div>
@@ -38,7 +38,7 @@
       </div>
 
       <!-- 品种列表 -->
-      <div class="mt-10">
+      <div class="mt-7 md:mt-10">
         <div class="flex items-end justify-between">
           <SectionTitle :title="`${category.name}名品`" en="VARIETIES" />
           <NuxtLink to="/orchids" class="text-[11px] tracking-[0.2em] text-ink-light hover:text-cinnabar">
@@ -46,7 +46,7 @@
           </NuxtLink>
         </div>
 
-        <div v-if="category.orchids?.length" class="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+        <div v-if="category.orchids?.length" class="mt-6 grid grid-cols-2 gap-x-3 gap-y-6 md:mt-8 md:gap-x-6 md:gap-y-10 md:grid-cols-3 lg:grid-cols-4">
           <OrchidCard v-for="orchid in category.orchids" :key="orchid.id" :orchid="orchid" />
         </div>
         <EmptyState v-else text="本类兰草正在整理" hint="可先浏览其他品类" />

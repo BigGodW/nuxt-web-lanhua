@@ -179,6 +179,53 @@ npm run dev            # http://localhost:3000
 - **海报**：canvas 生成 750×1180 竖版海报（封面 + 标题 + 摘要 + 二维码 + 印章），支持下载 / 长按保存。图片经 `/api/image-proxy` 同源取用，避免画布跨域污染。
 - **SEO**：详情页输出 `og:title` `og:description` `og:image` `og:url` `og:type`，微信、抖音、搜索引擎抓取链接时都有完整卡片信息。
 
+## 响应式与移动端
+
+断点沿用 Tailwind 默认：`sm 640` / `md 768` / `lg 1024` / `xl 1280`。**`md` 是「桌面形态」的分界**：`md` 以下按手机单列/两列排版，`md` 以上展开多列与侧栏；`lg` 只用于列表列数加密与后台侧栏。
+
+移动端约定（改页面时请沿用）：
+
+| 约定 | 说明 |
+| --- | --- |
+| 触摸目标 ≥ 44px | 分页按钮、菜单按钮、抽屉关闭按钮都是 `h-11 w-11`（44px），`md` 以上再缩回 `h-9 w-9` |
+| 安全区 | `viewport-fit=cover` + `.safe-b` / `.safe-t`（`env(safe-area-inset-bottom)`），用于页脚、抽屉、底部弹层 |
+| 横向滚动区 | 品类筛选条、详情页图集用 `no-scrollbar`（可滑动、不显示滚动条），`md` 以上改回换行 |
+| 首屏高度 | Hero 用 `h-[52vh] min-h-[350px]`，`md:h-[80vh]`；不用固定 `px`，避免移动浏览器地址栏收缩导致跳动 |
+| 字号收敛 | 详情页 h1 手机 26px / 桌面 42px；文章标题 23px / 36px；卡片标题 17px / 20px；列表区块标题 19px / 28px；正文 `.article-body` 手机 1rem + 1.95 行高 |
+| 间距阶梯（紧凑） | 手机端区块上下留白 `py-9`（36px），`md` 起 `py-20`（80px）；区块内标题到内容是 `mt-6 / mt-7`，`md` 起 `mt-10`；卡片栅格 `gap-y-6`，`md` 起 `gap-y-10`；容器左右内边距 16px（`sm` 起 20px，`lg` 起 32px） |
+| 头部高度 | 手机 56px（`h-14`），`md` 起 80px；Logo 印章 36px→44px |
+| 换行兜底 | `body { overflow-wrap: break-word }`，长链接、连续数字不会撑破窄屏；面包屑 `flex-wrap` |
+| 点按反馈 | 全局关掉 `-webkit-tap-highlight-color`，用 `active:` / `hover:` 提供反馈 |
+| 详情页操作区 | 手机端「返回 / 更多品类 / 分享」一行排布（分享收成 44px 图标按钮，`sm` 起显示文字），不再三行堆叠 |
+| 底部标签栏 | `components/common/MobileTabBar.vue`，`md` 以下固定展示 5 个入口（首页/兰谱/品类/兰文/关于），栏高 3.25rem + 安全区；页脚用 `.footer-tabbar-space` 预留同高空间，避免最后一行被压住 |
+| 页脚 | 手机端收成「品牌 + 横向导览 + 一行联络 + 版权」，隐藏 220px 装饰字与长备案说明；桌面端仍是三栏 |
+
+新增固定底栏类元素时，记得给同层最后一个块级容器加 `.footer-tabbar-space`（或自定 padding-bottom = 栏高 + `env(safe-area-inset-bottom)`）。
+
+自测建议：DevTools 依次切 320 / 375 / 390（iPhone）/ 768（iPad）/ 1024 / 1440，重点看长标题、长品类名、图集缩略图、分页条是否横向溢出。
+
+## 性能与缓存
+
+**瓶颈定位**：数据库在 `db.prisma.io`（海外），实测单次查询往返 400ms+，抖动时单条查询 1～8s。改前首页 `/api/home` 每次请求要打 6 次库（串行 `$transaction`），首屏 2.4s 起，冷启动 9s。
+
+三层缓存，逐层拦截：
+
+| 层 | 位置 | 作用 |
+| --- | --- | --- |
+| 内存缓存 | `server/utils/cache.js` | TTL + stale-while-revalidate + 单飞（同 key 并发只查一次库） |
+| 启动预热 | `server/plugins/warmup.js` | 服务启动后预热 settings / categories / home / 两个列表（先 `SELECT 1` 建连接，分两批各 3 个并发，失败重试 2 次） |
+| HTTP 缓存头 | `nuxt.config.js` 的 `routeRules` | 前台 `s-maxage=60, stale-while-revalidate=300` 交给 CDN；后台与鉴权 `no-store` |
+
+缓存 TTL：`settings` 5 分钟、`categories` 2 分钟、`home` 与列表 60 秒、详情 2 分钟。
+
+- 查询层集中在 `server/utils/queries.js`，接口只做参数解析；**接口与预热必须共用同一套缓存 key**（列表 key 由 `orchidListKey` / `articleListKey` 生成，含分页与筛选参数），否则预热写进去的 key 和接口读的对不上。
+- 后台任何写操作成功后，`server/middleware/cache-invalidate.js` 会清空前台缓存，不会出现「后台已发布、前台看不到」。
+- 关闭预热：环境变量 `NUXT_DISABLE_WARMUP=1`。
+- 内存缓存是**单实例**的；EdgeOne 多副本部署时各副本各有一份，靠 CDN 的 `s-maxage` 兜底，后台清缓存也只清当前实例，最多 60s 后自然过期。
+- 实测：`/api/home` 2400ms → **7ms**，`/api/orchids` 同量级，`/orchids/songmei` 页面 3s → 210ms。
+
+**根治建议**：以上只是把跨洋往返摊薄。要真正快，把数据库换到离用户近的地域（腾讯云 / 阿里云 Postgres，同地域 RTT 10～30ms），或使用 Prisma Accelerate（自带边缘连接池与查询缓存）。数据库就近后，本项目的缓存仍然有效，可继续保留。
+
 ## 部署
 
 ```bash
