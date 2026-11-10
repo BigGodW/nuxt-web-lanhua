@@ -20,7 +20,7 @@
       <div class="absolute inset-0 opacity-30 bg-paper-grain" />
       <div class="relative flex flex-col items-center gap-2 text-paper/70">
         <span class="font-song text-4xl tracking-seal">兰</span>
-        <span class="text-[10px] tracking-[0.3em] text-paper/50">九畹</span>
+        <span class="text-[10px] tracking-[0.3em] text-paper/50">蜀杨兰园</span>
       </div>
     </div>
 

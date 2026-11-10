@@ -114,6 +114,6 @@ function changePage(page) {
 
 useHead({
   title: '兰谱',
-  meta: [{ name: 'description', content: '九畹国兰谱：按春兰、蕙兰、建兰、墨兰、寒兰、春剑、莲瓣兰检索中国兰花名品。' }]
+  meta: [{ name: 'description', content: '蜀杨兰园国兰谱：按春兰、蕙兰、建兰、墨兰、寒兰、春剑、莲瓣兰检索中国兰花名品。' }]
 })
 </script>

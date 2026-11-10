@@ -99,13 +99,13 @@ const groups = [
   },
   {
     title: '分享与开放',
-    hint: '公众号 AppID 用于微信分享卡片，未填写时前端自动降级为右上角引导',
+    hint: '分享链接与海报二维码默认跟随当前访问的域名，此处地址可留空；仅当站点跑在内网/预览域名、需要固定分享正式域名时才填',
     fields: [
       {
         key: 'siteUrl',
-        label: '站点线上地址',
+        label: '站点线上地址（可留空）',
         wide: true,
-        placeholder: 'https://www.example.com（用于分享链接与海报二维码）'
+        placeholder: 'https://www.example.com'
       },
       { key: 'wechatAppId', label: '公众号 AppID', placeholder: 'wx...' },
       { key: 'wechatAppSecret', label: '公众号 AppSecret', placeholder: '不填写则关闭 JS-SDK 分享' }

@@ -89,8 +89,18 @@
         <p v-else class="text-[11px] text-ink-light">海报生成失败，请稍后重试</p>
       </div>
 
-      <p class="mt-3 text-center text-[11px] leading-5 text-ink-light">
-        {{ env.mobile ? '长按图片保存到相册，再发布到微信 / 抖音' : '点击下载保存图片，再发布到微信 / 抖音' }}
+      <!-- 二维码指向的真实链接：方便核对，也允许直接复制 -->
+      <button
+        class="mt-2 flex w-full items-center gap-1.5 text-[10.5px] leading-4 text-ink-light hover:text-jade-deep"
+        @click="handleCopy"
+      >
+        <van-icon name="link-o" size="12" class="shrink-0" />
+        <span class="min-w-0 flex-1 truncate text-left">{{ link }}</span>
+        <span class="shrink-0 text-gold-deep">复制</span>
+      </button>
+
+      <p class="mt-2 text-center text-[11px] leading-5 text-ink-light">
+        {{ isMobile ? '长按图片保存到相册，再发布到微信 / 抖音' : '点击下载保存图片，再发布到微信 / 抖音' }}
       </p>
 
       <div class="mt-3 flex gap-3">
@@ -130,6 +140,8 @@ const poster = ref('')
 
 const link = computed(() => absolute(props.path))
 const ogImage = computed(() => shareImage(props.image, 500))
+// env() 是函数，模板里不能直接写 env.mobile，否则永远是 undefined
+const isMobile = computed(() => env().mobile)
 
 async function handleWechat(target) {
   if (!env().inWeChat) {

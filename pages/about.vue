@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHero
-      title="关于九畹"
+      title="关于蜀杨兰园"
       en="ABOUT JIU WAN"
       :subtitle="site.slogan ? `${site.slogan}。` : ''"
     />
@@ -10,7 +10,7 @@
     <section class="container py-9 md:py-20">
       <div class="grid gap-6 md:grid-cols-[260px_1fr] md:gap-16">
         <div class="relative mx-auto w-full max-w-[240px] md:max-w-none">
-          <SmartImage src="https://wubugimg.orchids.com.cn/uploads/banner/202611/20261109-banner-2-ba06a4dd.jpg" alt="九畹兰室" ratio="3 / 4" class="pattern-frame" />
+          <SmartImage src="https://wubugimg.orchids.com.cn/uploads/banner/202611/20261109-banner-2-ba06a4dd.jpg" alt="蜀杨兰园兰室" ratio="3 / 4" class="pattern-frame" />
           <div class="mt-4 flex items-center justify-between">
             <span class="text-[10px] tracking-[0.25em] text-gold-deep/70">JIU WAN · 2026</span>
             <span class="seal h-9 w-9 text-[12px]">兰</span>
@@ -18,11 +18,11 @@
         </div>
 
         <div>
-          <SectionTitle title="九畹之名" en="THE NAME" />
+          <SectionTitle title="蜀杨兰园之名" en="THE NAME" />
           <p class="mt-4 font-song text-[13.5px] leading-7 text-ink-soft/90 md:mt-5 md:text-[14px] md:leading-8">{{ site.about }}</p>
 
           <div class="mt-5 border-l-2 border-gold/50 bg-paper-light/60 px-4 py-3.5 font-song text-[12.5px] leading-6 text-ink-soft/80 md:mt-6 md:px-5 md:py-4 md:text-[13px] md:leading-7">
-            <p>“余既滋兰之九畹兮，又树蕙之百亩。”</p>
+            <p>“余既滋兰之蜀杨兰园兮，又树蕙之百亩。”</p>
             <p class="mt-1 text-[11px] tracking-[0.2em] text-ink-light">—— 屈原《离骚》</p>
           </div>
 
@@ -70,7 +70,7 @@
     <section class="container py-9 md:py-20">
       <div class="grid gap-7 md:grid-cols-[1fr_1fr] md:gap-16">
         <div>
-          <SectionTitle title="联络九畹" en="CONTACT" subtitle="品种指正、图文投稿、交流养兰心得，欢迎来信。" />
+          <SectionTitle title="联络蜀杨兰园" en="CONTACT" subtitle="品种指正、图文投稿、交流养兰心得，欢迎来信。" />
 
           <dl class="mt-6 space-y-3 md:mt-8 md:space-y-4">
             <div v-for="item in contacts" :key="item.label" class="flex gap-6 border-b border-[#E3DBC9]/70 pb-3">
@@ -88,8 +88,8 @@
               养兰如养心，<br />急不得，也躁不得。
             </p>
             <div class="mt-6 flex items-center justify-between md:mt-8">
-              <span class="text-[11px] tracking-[0.25em] text-paper/45">{{ site.contactPerson || '九畹编辑部' }}</span>
-              <span class="seal h-10 w-10 text-[13px]">九畹</span>
+              <span class="text-[11px] tracking-[0.25em] text-paper/45">{{ site.contactPerson || '蜀杨兰园编辑部' }}</span>
+              <span class="seal h-10 w-10 text-[13px]">蜀杨兰园</span>
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ const contacts = computed(() => [
 ])
 
 useHead({
-  title: '关于九畹',
-  meta: [{ name: 'description', content: site.value.about || '关于九畹国兰清赏' }]
+  title: '关于蜀杨兰园',
+  meta: [{ name: 'description', content: site.value.about || '关于蜀杨兰园国兰清赏' }]
 })
 </script>

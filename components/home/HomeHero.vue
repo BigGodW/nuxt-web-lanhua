@@ -64,7 +64,7 @@
               />
             </div>
             <div class="hidden items-center gap-3 md:flex">
-              <span class="text-[10px] tracking-[0.3em] text-paper/40">九畹清赏</span>
+              <span class="text-[10px] tracking-[0.3em] text-paper/40">蜀杨兰园清赏</span>
               <span class="h-8 w-px bg-paper/20" />
               <span class="vertical-text font-song text-[11px] text-paper/45">香远益清</span>
             </div>
@@ -81,7 +81,7 @@
             一茎一花<br />香远益清
           </h1>
           <p class="mt-4 max-w-md text-[12.5px] leading-6 text-paper/65 md:mt-6 md:text-[13px] md:leading-7">
-            九畹 · 国兰清赏，记录春兰、蕙兰、建兰、墨兰、寒兰的中国兰花名品与养护之道。
+            蜀杨兰园 · 国兰清赏，记录春兰、蕙兰、建兰、墨兰、寒兰的中国兰花名品与养护之道。
           </p>
         </div>
       </div>

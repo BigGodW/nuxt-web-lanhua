@@ -10,7 +10,7 @@
       <div class="relative flex items-center gap-3">
         <span class="seal h-11 w-11 text-lg">兰</span>
         <div>
-          <p class="font-song text-xl tracking-[0.3em] text-paper">九畹</p>
+          <p class="font-song text-xl tracking-[0.3em] text-paper">蜀杨兰园</p>
           <p class="mt-1 text-[9px] tracking-[0.3em] text-gold-light/50">GUOLAN · ORCHID</p>
         </div>
       </div>
@@ -26,7 +26,7 @@
         </p>
       </div>
 
-      <p class="relative text-[10px] tracking-[0.2em] text-paper/25">© 2026 九畹 · 国兰清赏</p>
+      <p class="relative text-[10px] tracking-[0.2em] text-paper/25">© 2026 蜀杨兰园 · 国兰清赏</p>
     </div>
 
     <!-- 右侧表单 -->
@@ -35,7 +35,7 @@
         <div class="flex items-center gap-3 lg:hidden">
           <span class="seal h-10 w-10 text-base">兰</span>
           <div>
-            <p class="font-song text-lg tracking-[0.28em] text-jade-deep">九畹</p>
+            <p class="font-song text-lg tracking-[0.28em] text-jade-deep">蜀杨兰园</p>
             <p class="mt-1 text-[9px] tracking-[0.28em] text-gold-deep/60">ADMIN CONSOLE</p>
           </div>
         </div>
@@ -72,10 +72,7 @@
           </button>
         </form>
 
-        <div class="mt-6 border border-[#E3DBC9] bg-paper-light/70 px-4 py-3 text-[11px] leading-6 text-ink-light">
-          <p>初始账号：<span class="text-jade-deep">admin</span> / <span class="text-jade-deep">admin123</span></p>
-          <p class="text-cinnabar/70">首次部署后请及时在「站点设置」中修改密码。</p>
-        </div>
+        
 
         <NuxtLink to="/" class="mt-8 inline-flex items-center gap-2 text-[11px] tracking-[0.15em] text-ink-light hover:text-jade-deep">
           <van-icon name="arrow-left" size="11" />

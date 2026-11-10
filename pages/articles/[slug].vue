@@ -27,7 +27,7 @@
           <span>阅读 {{ article.viewCount }}</span>
         </div>
         <div class="ornament mx-auto mt-6 max-w-xs text-[10px] tracking-[0.3em] md:mt-8">
-          <span>九畹</span>
+          <span>蜀杨兰园</span>
         </div>
       </header>
 
@@ -150,7 +150,7 @@ useSeoMeta({
   ogImageWidth: 500,
   ogImageHeight: 281,
   twitterCard: 'summary_large_image',
-  articleAuthor: () => [article.value?.author || '九畹编辑部'],
+  articleAuthor: () => [article.value?.author || '蜀杨兰园编辑部'],
   articlePublishedTime: () => (article.value?.publishedAt ? new Date(article.value.publishedAt).toISOString() : '')
 })
 </script>

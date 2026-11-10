@@ -39,20 +39,79 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath()
 }
 
+function normalizeUrl(value) {
+  return String(value || '').trim().replace(/\/+$/, '')
+}
+
+/** 本地 / 内网地址：分享给外部用户打不开，这时才需要退回后台配置的正式域名 */
+function isPrivateOrigin(origin) {
+  try {
+    const { hostname } = new URL(origin)
+    return (
+      hostname === 'localhost' ||
+      hostname === '0.0.0.0' ||
+      hostname === '::1' ||
+      hostname === '[::1]' ||
+      /^127\./.test(hostname) ||
+      /^10\./.test(hostname) ||
+      /^192\.168\./.test(hostname) ||
+      /^172\.(1[6-9]|2\d|3[01])\./.test(hostname) ||
+      /\.local$/i.test(hostname) ||
+      /\.(internal|lan)$/i.test(hostname)
+    )
+  } catch {
+    return false
+  }
+}
+
+/**
+ * 服务端渲染时推断当前请求的真实域名
+ * 说明：useRequestURL() 在 head 解析阶段可能已脱离请求上下文而返回空，
+ * 直接读请求头更稳（EdgeOne / Nginx 反代下以 x-forwarded-* 为准）
+ */
+function detectServerOrigin() {
+  try {
+    const event = useRequestEvent()
+    const req = event?.node?.req
+    if (!req) return ''
+    const headers = req.headers || {}
+    const host = String(headers['x-forwarded-host'] || headers.host || '').split(',')[0].trim()
+    if (!host) return ''
+    const proto =
+      String(headers['x-forwarded-proto'] || '').split(',')[0].trim() ||
+      (req.socket?.encrypted ? 'https' : 'http')
+    return `${proto}://${host}`
+  } catch {
+    return ''
+  }
+}
+
 export function useShare() {
   const config = useRuntimeConfig()
   const site = useSite()
   const cdnDomain = String(config.public.qiniuCdnDomain || '').replace(/^https?:\/\//, '')
+  // 在 setup 阶段就把请求域名记下来，避免后续（head 解析、异步回调）拿不到上下文
+  const ssrOrigin = import.meta.client ? '' : detectServerOrigin()
 
-  // 站点地址优先级：后台设置 > 环境变量 > 当前请求域名
+  // 站点地址优先级（浏览器端）：正在访问的网址 > 后台设置 > 环境变量
+  // 服务端渲染时拿不到浏览器地址，才退回后台设置 / 环境变量 / 请求域名
+  //
+  // 注意：这里必须让「运行中的网址」优先。后台的站点地址是历史配置，
+  // 换域名、换 EdgeOne 预览域名后会过期，一旦优先就会让分享链接和
+  // 海报二维码指向一个打不开的旧地址。
   function origin() {
-    const fromSetting = String(site.value?.siteUrl || '').replace(/\/+$/, '')
-    if (fromSetting) return fromSetting
+    const configured =
+      normalizeUrl(site.value?.siteUrl) || normalizeUrl(config.public.siteUrl)
 
-    const fromEnv = String(config.public.siteUrl || '').replace(/\/+$/, '')
-    if (fromEnv) return fromEnv
+    if (import.meta.client && window.location.origin) {
+      const live = window.location.origin
+      // 本地 / 内网调试时分享出去别人打不开，才用配置的正式域名
+      if (isPrivateOrigin(live)) return configured || live
+      return live
+    }
 
-    if (import.meta.client) return window.location.origin
+    if (configured) return configured
+    if (ssrOrigin) return ssrOrigin
     try {
       return useRequestURL().origin
     } catch {
@@ -109,15 +168,46 @@ export function useShare() {
   }
 
   /**
+   * 二维码图片：优先在浏览器本地生成
+   * 原因：走 /api/qrcode?text=... 时，一旦 CDN / 边缘缓存忽略查询参数，
+   * 所有页面都会拿到同一张（第一个被缓存的）二维码。本地生成则永远等于当前链接。
+   * 失败时才退回服务端接口。
+   */
+  async function qrImage(text) {
+    const value = String(text || '')
+    if (!value) throw new Error('缺少二维码内容')
+
+    if (import.meta.client) {
+      try {
+        const mod = await import('qrcode')
+        const QR = mod.default || mod
+        const dataUrl = await QR.toDataURL(value, {
+          width: 360,
+          margin: 1,
+          errorCorrectionLevel: 'M',
+          color: { dark: '#24382FFF', light: '#FFFFFFFF' }
+        })
+        return await loadImage(dataUrl)
+      } catch {
+        /* 落到服务端接口 */
+      }
+    }
+    return loadImage(`/api/qrcode?text=${encodeURIComponent(value)}&size=360`)
+  }
+
+  /**
    * 配置微信分享卡片（需要公众号 AppID/Secret）
    * 返回 { enabled, reason }
    */
   async function setupWechat({ title, desc, link, imgUrl }) {
     if (!import.meta.client || !env().inWeChat) return { enabled: false, reason: '不在微信内' }
 
+    // 签名必须用「当前页面地址」，用别处的地址会被微信判为 invalid signature
+    const signUrl = window.location.href.split('#')[0]
+
     let sign
     try {
-      sign = await $fetch('/api/wechat/signature', { query: { url: link } })
+      sign = await $fetch('/api/wechat/signature', { query: { url: signUrl } })
     } catch (error) {
       return { enabled: false, reason: error?.data?.message || '微信签名失败' }
     }
@@ -284,7 +374,7 @@ export function useShare() {
     const qrSize = 150
     const qrY = dividerY + 34
     try {
-      const qr = await loadImage(`/api/qrcode?text=${encodeURIComponent(url)}&size=360`)
+      const qr = await qrImage(url)
       ctx.drawImage(qr, 52, qrY, qrSize, qrSize)
     } catch {
       ctx.strokeStyle = '#C9BEA4'
@@ -331,5 +421,5 @@ export function useShare() {
     document.body.removeChild(link)
   }
 
-  return { absolute, shareImage, env, copyText, setupWechat, makePoster, download }
+  return { origin, absolute, shareImage, env, copyText, setupWechat, qrImage, makePoster, download }
 }

@@ -5,7 +5,7 @@
       <div class="container flex h-8 items-center justify-between text-[11px] tracking-[0.25em] text-paper/65">
         <span class="font-song">{{ site.slogan || '一茎一花，香远益清' }}</span>
         <div class="flex items-center gap-5">
-          <span class="text-paper/40">国兰清赏 · 九畹</span>
+          <span class="text-paper/40">国兰清赏 · 蜀杨兰园</span>
           <NuxtLink to="/admin" class="transition-colors hover:text-gold-light">管理后台</NuxtLink>
         </div>
       </div>
@@ -18,7 +18,7 @@
           <span class="seal h-9 w-9 text-[13px] md:h-11 md:w-11 md:text-lg">兰</span>
           <span class="leading-none">
             <span class="block font-song text-lg tracking-[0.24em] text-jade-deep md:text-2xl md:tracking-[0.3em]">
-              {{ site.siteName || '九畹' }}
+              {{ site.siteName || '蜀杨兰园' }}
             </span>
             <span class="mt-1 block text-[9px] tracking-[0.26em] text-gold-deep/70 md:mt-1.5 md:text-[10px] md:tracking-[0.3em]">GUOLAN · ORCHID</span>
           </span>
@@ -62,7 +62,7 @@
           <div class="flex items-center gap-3">
             <span class="seal h-10 w-10 text-base">兰</span>
             <div>
-              <p class="font-song text-lg tracking-[0.25em] text-jade-deep">{{ site.siteName || '九畹' }}</p>
+              <p class="font-song text-lg tracking-[0.25em] text-jade-deep">{{ site.siteName || '蜀杨兰园' }}</p>
               <p class="mt-1 text-[10px] tracking-[0.3em] text-gold-deep/70">GUOLAN · ORCHID</p>
             </div>
           </div>

@@ -6,7 +6,7 @@
     <section class="border-b border-[#E3DBC9]/70 bg-paper">
       <div class="container py-7 text-center md:py-12">
         <p class="font-song text-[12.5px] leading-7 tracking-[0.18em] text-ink-soft/80 md:text-[15px] md:leading-8 md:tracking-[0.22em]">
-          余既滋兰之九畹兮，又树蕙之百亩
+          余既滋兰之蜀杨兰园兮，又树蕙之百亩
         </p>
         <p class="mt-2 text-[10px] tracking-[0.4em] text-gold-deep/60">屈原 · 离骚</p>
       </div>
@@ -142,7 +142,7 @@
     <section class="border-t border-[#E3DBC9]/60 bg-paper-light/50 py-9 md:py-20">
       <div class="container grid items-center gap-7 md:grid-cols-2 md:gap-16">
         <div class="relative">
-          <SmartImage src="https://wubugimg.orchids.com.cn/uploads/banner/202611/20261109-banner-2-ba06a4dd.jpg" alt="九畹兰室" ratio="4 / 3" class="pattern-frame">
+          <SmartImage src="https://wubugimg.orchids.com.cn/uploads/banner/202611/20261109-banner-2-ba06a4dd.jpg" alt="蜀杨兰园兰室" ratio="4 / 3" class="pattern-frame">
             <div class="absolute inset-0 bg-jade-deep/10" />
           </SmartImage>
           <div class="absolute -bottom-5 -right-4 hidden bg-paper px-5 py-3 shadow-card md:block">
@@ -152,9 +152,9 @@
 
         <div>
           <SectionTitle
-            title="关于九畹"
+            title="关于蜀杨兰园"
             en="ABOUT JIU WAN"
-            subtitle="九畹之名，取自屈原《离骚》。这里记录国兰的品种谱系与瓣型之美，也记录养兰人的日常。"
+            subtitle="蜀杨兰园之名，取自屈原《离骚》。这里记录国兰的品种谱系与瓣型之美，也记录养兰人的日常。"
           />
 
           <p class="mt-4 line-clamp-4 text-[12.5px] leading-6 text-ink-soft/80 md:mt-5 md:text-[13px] md:leading-7">
@@ -180,7 +180,7 @@
             to="/about"
             class="group mt-6 inline-flex items-center gap-2 border border-jade-deep/30 px-5 py-2.5 md:mt-8 md:px-6 md:py-3 font-song text-[13px] tracking-[0.2em] text-jade-deep transition-colors hover:border-jade-deep hover:bg-jade-deep hover:text-paper"
           >
-            走进九畹
+            走进蜀杨兰园
             <van-icon name="arrow" size="12" class="transition-transform group-hover:translate-x-1" />
           </NuxtLink>
         </div>

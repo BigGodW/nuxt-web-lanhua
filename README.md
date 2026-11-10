@@ -63,7 +63,7 @@ npm run dev            # http://localhost:3000
 | --- | --- |
 | `DATABASE_URL` | PostgreSQL 连接串，云端库需带 `sslmode=require` |
 | `NUXT_AUTH_SECRET` | 登录令牌签名密钥，生产环境必须替换 |
-| `NUXT_PUBLIC_SITE_URL` | 站点线上地址，用于分享链接、海报二维码、`og:image` 绝对地址 |
+| `NUXT_PUBLIC_SITE_URL` | 站点线上地址（**可留空**）。分享链接与海报二维码默认跟随浏览器当前域名，仅在本地/内网调试时用它兜底；`og:url` 优先用它 |
 | `NUXT_QINIU_ACCESS_KEY` / `NUXT_QINIU_SECRET_KEY` | 七牛云密钥（仅服务端可用） |
 | `NUXT_QINIU_BUCKET` / `NUXT_QINIU_REGION` | 存储空间与区域（华东 `z0`） |
 | `NUXT_QINIU_CDN_DOMAIN` | 上传时拼装图片地址的 CDN 域名 |
@@ -177,7 +177,9 @@ npm run dev            # http://localhost:3000
 - **微信**：公众号 AppID / AppSecret 配置齐全时，自动加载 JS-SDK（`updateAppMessageShareData` / `updateTimelineShareData`），分享卡片显示标题、摘要与封面；未配置时弹「右上角 ··· 」引导蒙层。
 - **抖音**：检测抖音内置浏览器 UA，给出「右上角分享」引导；其他环境复制链接提示粘贴，海报可直接发布为图文。
 - **海报**：canvas 生成 750×1180 竖版海报（封面 + 标题 + 摘要 + 二维码 + 印章），支持下载 / 长按保存。图片经 `/api/image-proxy` 同源取用，避免画布跨域污染。
-- **SEO**：详情页输出 `og:title` `og:description` `og:image` `og:url` `og:type`，微信、抖音、搜索引擎抓取链接时都有完整卡片信息。
+- **链接与二维码的域名**：**以浏览器正在访问的网址为准**（`window.location.origin`）。后台「站点线上地址」/`NUXT_PUBLIC_SITE_URL` 只是兜底——只有本地或内网调试（`localhost`、`10.x`、`192.168.x` 等）时才用它，避免把内网地址分享出去。这样换域名、EdgeOne 预览域名变化都不会让二维码指向旧地址。
+- **二维码生成**：浏览器端用 `qrcode` 动态生成（`await import('qrcode')`，约 20KB，点开海报才加载），不经过 `/api/qrcode`，因此不受 CDN/边缘缓存「忽略查询参数」的影响；动态导入失败时自动回退到 `/api/qrcode?text=`。
+- **SEO**：详情页输出 `og:title` `og:description` `og:image` `og:url` `og:type`，微信、抖音、搜索引擎抓取链接时都有完整卡片信息。`og:url` 在服务端取真实请求域名（优先 `x-forwarded-host` 与 `x-forwarded-proto`），反代/EdgeOne 下也是绝对地址。
 
 ## 响应式与移动端
 

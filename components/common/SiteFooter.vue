@@ -15,7 +15,7 @@
             <span class="seal h-9 w-9 text-sm md:h-11 md:w-11 md:text-lg">兰</span>
             <div>
               <p class="font-song text-lg tracking-[0.22em] text-paper md:text-2xl md:tracking-[0.28em]">
-                {{ site.siteName || '九畹' }}
+                {{ site.siteName || '蜀杨兰园' }}
               </p>
               <p class="mt-0.5 text-[9px] tracking-[0.3em] text-gold-light/60 md:mt-1">GUOLAN · ORCHID</p>
             </div>
@@ -41,7 +41,7 @@
 
         <!-- 联络：仅桌面显示，手机端压成下方一行 -->
         <div class="hidden md:block">
-          <p class="font-song text-sm tracking-[0.25em] text-paper/90">联络九畹</p>
+          <p class="font-song text-sm tracking-[0.25em] text-paper/90">联络蜀杨兰园</p>
           <div class="mt-4 space-y-2 text-[13px] leading-6">
             <p v-if="site.phone">电话　{{ site.phone }}</p>
             <p v-if="site.email">邮箱　{{ site.email }}</p>
@@ -62,7 +62,7 @@
       <div
         class="mt-3.5 flex flex-col gap-1 border-t border-paper/10 pt-3.5 text-[10.5px] text-paper/40 md:mt-12 md:flex-row md:items-center md:justify-between md:gap-2 md:pt-6 md:text-[11px]"
       >
-        <p>{{ site.copyright || '© 2026 九畹 · 国兰清赏' }}</p>
+        <p>{{ site.copyright || '© 2026 蜀杨兰园 · 国兰清赏' }}</p>
         <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
           <span v-if="site.icp">{{ site.icp }}</span>
           <span v-if="site.footerNote" class="hidden text-paper/30 md:inline">{{ site.footerNote }}</span>
@@ -79,7 +79,7 @@ const nav = [
   { label: '兰谱总览', to: '/orchids' },
   { label: '国兰品类', to: '/categories' },
   { label: '兰文共赏', to: '/articles' },
-  { label: '关于九畹', to: '/about' },
+  { label: '关于蜀杨兰园', to: '/about' },
   { label: '管理后台', to: '/admin' }
 ]
 
