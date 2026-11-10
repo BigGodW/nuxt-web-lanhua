@@ -12,7 +12,7 @@ generator client {
   // 切换后必须重跑 generate：停掉 nuxt dev → npx prisma generate → npm run dev
   // binaryTargets = ["native", "rhel-openssl-1.1.x"]
   // 部署到腾讯云配置
-  // binaryTargets = [ "rhel-openssl-1.1.x"]
+  binaryTargets = [ "rhel-openssl-1.1.x"]
 }
 
 datasource db {
