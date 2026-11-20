@@ -41,7 +41,7 @@
                   <SmartImage :src="row.cover" :alt="row.title" ratio="4 / 3" w="120" class="w-14 shrink-0" />
                   <div class="min-w-0 max-w-[280px]">
                     <p class="truncate font-song text-[13px] text-ink">{{ row.title }}</p>
-                    <p class="mt-0.5 truncate text-[11px] text-ink-light">
+                    <p class="mt-0.5 truncate text-[12px] text-ink-light">
                       <span v-if="row.isTop" class="text-cinnabar">[置顶] </span>{{ row.slug }}
                     </p>
                   </div>
@@ -85,7 +85,7 @@
             <p class="font-song text-[16px] tracking-[0.12em] text-jade-deep">
               {{ form.id ? '编辑文章' : '撰写文章' }}
             </p>
-            <p class="mt-0.5 text-[11px] text-ink-light">正文支持 HTML 片段</p>
+            <p class="mt-0.5 text-[12px] text-ink-light">正文支持 HTML 片段</p>
           </div>
           <button class="text-ink-light hover:text-cinnabar" @click="formOpen = false">
             <van-icon name="cross" size="18" />
@@ -156,7 +156,7 @@
                 <label class="admin-label">置顶</label>
                 <div class="flex h-[34px] items-center gap-2">
                   <van-switch v-model="form.isTop" size="18px" />
-                  <span class="text-[11px] text-ink-light">{{ form.isTop ? '已置顶' : '普通' }}</span>
+                  <span class="text-[12px] text-ink-light">{{ form.isTop ? '已置顶' : '普通' }}</span>
                 </div>
               </div>
             </div>
@@ -248,7 +248,7 @@ function openForm(row = null) {
       cover: row.cover || '',
       summary: row.summary || '',
       content: row.content || '',
-      tagsText: (row.tags || []).join(', '),
+      tagsText: (row.tags || []).map((tag) => tag.name).join(', '),
       isTop: !!row.isTop,
       status: row.status,
       publishedAt: toDateInput(row.publishedAt)

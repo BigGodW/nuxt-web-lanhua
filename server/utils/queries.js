@@ -33,6 +33,16 @@ export function loadCategories() {
   })
 }
 
+/** 第三方平台（启用中的）：变化极少，缓存 2 分钟 */
+export function loadPlatforms() {
+  return cached('platforms', 2 * MINUTE, async () => {
+    return prisma.platform.findMany({
+      where: { isActive: true },
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
+    })
+  })
+}
+
 /** 首页聚合数据：缓存 60 秒 */
 export function loadHome() {
   return cached('home', MINUTE, async () => {
@@ -56,7 +66,7 @@ export function loadHome() {
           summary: true,
           flowering: true,
           fragrance: true,
-          tags: true,
+          tags: { select: { name: true, slug: true } },
           category: { select: { name: true, slug: true } }
         }
       }),
@@ -98,29 +108,52 @@ export function loadHome() {
  * 列表缓存 key：接口与预热必须用同一套规则，
  * 否则参数顺序不同就会变成两个 key，预热等于没用。
  */
-export function orchidListKey({ page = 1, pageSize = 12, category = '', keyword = '', featured = '' } = {}) {
-  return `orchids:${page}:${pageSize}:${category}:${keyword}:${featured}`
+export function orchidListKey({ page = 1, pageSize = 12, category = '', keyword = '', featured = '', tag = '' } = {}) {
+  return `orchids:${page}:${pageSize}:${category}:${keyword}:${featured}:${tag}`
 }
 
-export function articleListKey({ page = 1, pageSize = 8, category = '', keyword = '' } = {}) {
-  return `articles:${page}:${pageSize}:${category}:${keyword}`
+export function articleListKey({ page = 1, pageSize = 8, category = '', keyword = '', tag = '' } = {}) {
+  return `articles:${page}:${pageSize}:${category}:${keyword}:${tag}`
+}
+
+/** 全部标签（含兰花/文章数量）：标签变化少，缓存 2 分钟 */
+export function loadTags() {
+  return cached('tags', 2 * MINUTE, async () => {
+    const tags = await prisma.tag.findMany({
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        _count: {
+          select: {
+            orchids: { where: { status: 'published' } },
+            articles: { where: { status: 'published' } }
+          }
+        }
+      }
+    })
+    // 没有关联任何已发布内容的标签不展示（后台保存时自动创建的标签会留下空标签）
+    return tags.filter((tag) => tag._count.orchids + tag._count.articles > 0)
+  })
 }
 
 /** 品种列表：筛选条件 + 分页整体缓存 60s */
 export function loadOrchidList(params = {}) {
-  const { page = 1, pageSize = 12, category = '', keyword = '', featured = '' } = params
+  const { page = 1, pageSize = 12, category = '', keyword = '', featured = '', tag = '' } = params
 
   return cached(orchidListKey(params), MINUTE, async () => {
     const where = { status: 'published' }
     if (category) where.category = { slug: String(category) }
     if (featured === '1') where.isFeatured = true
+    if (tag) where.tags = { some: { slug: String(tag) } }
     if (keyword && String(keyword).trim()) {
       const kw = String(keyword).trim()
       where.OR = [
         { name: { contains: kw, mode: 'insensitive' } },
         { alias: { contains: kw, mode: 'insensitive' } },
         { summary: { contains: kw, mode: 'insensitive' } },
-        { tags: { has: kw } }
+        { tags: { some: { name: kw } } }
       ]
     }
 
@@ -136,7 +169,7 @@ export function loadOrchidList(params = {}) {
         flowering: true,
         fragrance: true,
         difficulty: true,
-        tags: true,
+        tags: { select: { name: true, slug: true } },
         isFeatured: true,
         category: { select: { name: true, slug: true } }
       },
@@ -151,11 +184,12 @@ export function loadOrchidList(params = {}) {
 
 /** 文章列表：筛选条件 + 分页整体缓存 60s */
 export function loadArticleList(params = {}) {
-  const { page = 1, pageSize = 8, category = '', keyword = '' } = params
+  const { page = 1, pageSize = 8, category = '', keyword = '', tag = '' } = params
 
   return cached(articleListKey(params), MINUTE, async () => {
     const where = { status: 'published' }
     if (category) where.category = String(category)
+    if (tag) where.tags = { some: { slug: String(tag) } }
     if (keyword && String(keyword).trim()) {
       const kw = String(keyword).trim()
       where.OR = [
@@ -174,7 +208,7 @@ export function loadArticleList(params = {}) {
         summary: true,
         category: true,
         author: true,
-        tags: true,
+        tags: { select: { name: true, slug: true } },
         isTop: true,
         viewCount: true,
         publishedAt: true

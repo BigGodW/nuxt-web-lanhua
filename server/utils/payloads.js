@@ -29,7 +29,7 @@ export function orchidData(body = {}) {
   if (body.slug !== undefined) data.slug = String(body.slug).trim()
   if (body.categoryId !== undefined) data.categoryId = toInt(body.categoryId)
   if (body.images !== undefined) data.images = toList(body.images)
-  if (body.tags !== undefined) data.tags = toList(body.tags)
+  // tags 已独立成表，由接口层用 server/utils/tags.js 的 tagOps 处理
   if (body.isFeatured !== undefined) data.isFeatured = toBool(body.isFeatured)
   if (body.sortOrder !== undefined) data.sortOrder = toInt(body.sortOrder)
   if (body.status !== undefined) data.status = status(body.status)
@@ -55,13 +55,24 @@ export function articleData(body = {}) {
 
   if (body.slug !== undefined) data.slug = String(body.slug).trim()
   if (body.category !== undefined) data.category = String(body.category).trim() || '兰文化'
-  if (body.tags !== undefined) data.tags = toList(body.tags)
+  // tags 已独立成表，由接口层用 server/utils/tags.js 的 tagOps 处理
   if (body.isTop !== undefined) data.isTop = toBool(body.isTop)
   if (body.status !== undefined) data.status = status(body.status)
   if (body.publishedAt) {
     const date = new Date(body.publishedAt)
     if (!Number.isNaN(date.getTime())) data.publishedAt = date
   }
+
+  return data
+}
+
+export function platformData(body = {}) {
+  const data = pick(body, ['name', 'logo', 'qrCode', 'link', 'note'])
+
+  if (data.name !== undefined) data.name = String(data.name).trim()
+  if (data.link !== undefined) data.link = String(data.link).trim()
+  if (body.sortOrder !== undefined) data.sortOrder = toInt(body.sortOrder)
+  if (body.isActive !== undefined) data.isActive = toBool(body.isActive)
 
   return data
 }

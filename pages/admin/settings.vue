@@ -12,7 +12,7 @@
           <div class="mb-4 flex items-center gap-2">
             <span class="h-3 w-px bg-cinnabar" />
             <p class="font-song text-[13px] tracking-[0.12em] text-jade-deep">{{ group.title }}</p>
-            <span v-if="group.hint" class="text-[11px] text-ink-light">{{ group.hint }}</span>
+            <span v-if="group.hint" class="text-[12px] text-ink-light">{{ group.hint }}</span>
           </div>
 
           <div class="grid gap-4 md:grid-cols-2">
@@ -53,7 +53,7 @@
       </div>
 
       <div class="mt-5 flex items-center justify-between">
-        <p class="text-[11px] text-ink-light">当前登录：{{ user?.nickname || user?.username }}</p>
+        <p class="text-[12px] text-ink-light">当前登录：{{ user?.nickname || user?.username }}</p>
         <button class="admin-btn" :disabled="changing" @click="changePassword">
           {{ changing ? '提交中…' : '修改密码' }}
         </button>

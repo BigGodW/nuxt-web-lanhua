@@ -27,7 +27,7 @@
                   <SmartImage :src="row.cover" :alt="row.name" ratio="1 / 1" w="120" class="w-11 shrink-0" />
                   <div>
                     <p class="font-song text-[13px] text-ink">{{ row.name }}</p>
-                    <p class="mt-0.5 text-[11px] text-ink-light">{{ row.slug }}</p>
+                    <p class="mt-0.5 text-[12px] text-ink-light">{{ row.slug }}</p>
                   </div>
                 </div>
               </td>
@@ -101,7 +101,7 @@
               <label class="admin-label">是否启用</label>
               <div class="flex h-[34px] items-center gap-2">
                 <van-switch v-model="form.isActive" size="18px" />
-                <span class="text-[11px] text-ink-light">{{ form.isActive ? '前台显示' : '前台隐藏' }}</span>
+                <span class="text-[12px] text-ink-light">{{ form.isActive ? '前台显示' : '前台隐藏' }}</span>
               </div>
             </div>
           </div>

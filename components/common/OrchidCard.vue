@@ -28,8 +28,9 @@
     </p>
 
     <div v-if="orchid.tags?.length" class="mt-1.5 flex flex-wrap gap-x-2.5 gap-y-0.5 md:mt-2 md:gap-x-3 md:gap-y-1">
-      <span v-for="tag in orchid.tags.slice(0, 3)" :key="tag" class="text-[11px] text-gold-deep/70">
-        · {{ tag }}
+      <!-- 卡片整体是链接，标签保持纯文本；可点击的标签在详情页 -->
+      <span v-for="tag in orchid.tags.slice(0, 3)" :key="tag.name" class="text-[11px] text-gold-deep/70">
+        · {{ tag.name }}
       </span>
     </div>
   </NuxtLink>

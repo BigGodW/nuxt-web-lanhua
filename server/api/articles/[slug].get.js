@@ -4,7 +4,8 @@ export default defineEventHandler(async (event) => {
   // 详情页缓存 2 分钟：正文+前后篇+相关文章一次算好
   const data = await cached(`article:${slug}`, 2 * 60 * 1000, async () => {
     const article = await prisma.article.findFirst({
-      where: { slug, status: 'published' }
+      where: { slug, status: 'published' },
+      include: { tags: { select: { name: true, slug: true }, orderBy: { id: 'asc' } } }
     })
 
     if (!article) {

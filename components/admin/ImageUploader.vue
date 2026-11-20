@@ -11,7 +11,7 @@
           <button type="button" class="admin-btn-ghost" :disabled="uploading" @click="pick">
             {{ uploading ? '上传中…' : single ? '重新上传' : '上传图片' }}
           </button>
-          <span class="text-[11px] text-ink-light">自动压缩后存七牛云</span>
+          <span class="text-[12px] text-ink-light">自动压缩后存七牛云</span>
         </div>
         <input v-model.trim="single" class="admin-input" placeholder="也可直接粘贴图片地址" />
       </div>
@@ -33,7 +33,7 @@
         <button
           v-if="list.length < max"
           type="button"
-          class="flex h-20 w-20 flex-col items-center justify-center gap-1 border border-dashed border-[#C9BEA4] text-[11px] text-ink-light transition-colors hover:border-gold hover:text-gold-deep"
+          class="flex h-20 w-20 flex-col items-center justify-center gap-1 border border-dashed border-[#C9BEA4] text-[12px] text-ink-light transition-colors hover:border-gold hover:text-gold-deep"
           :disabled="uploading"
           @click="pick"
         >
@@ -41,7 +41,7 @@
           {{ uploading ? '上传中' : '添加' }}
         </button>
       </div>
-      <p class="mt-2 text-[11px] text-ink-light">最多 {{ max }} 张，上传后自动压缩；拖动文件到框内也可上传。</p>
+      <p class="mt-2 text-[12px] text-ink-light">最多 {{ max }} 张，上传后自动压缩；拖动文件到框内也可上传。</p>
     </div>
 
     <input ref="inputRef" type="file" accept="image/*" :multiple="multiple" class="hidden" @change="onSelect" />

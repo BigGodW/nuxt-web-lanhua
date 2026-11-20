@@ -36,6 +36,11 @@
         </div>
       </div>
 
+      <!-- 标签筛选 -->
+      <div class="mt-4">
+        <TagFilter :tags="tags || []" :active="route.query.tag || ''" count-key="articles" base-path="/articles" />
+      </div>
+
       <div class="mt-4 flex items-center justify-between text-[11px] tracking-[0.1em] text-ink-light md:mt-5">
         <span>共 {{ data?.total || 0 }} 篇</span>
         <span v-if="route.query.keyword" class="text-cinnabar/70">关键词：{{ route.query.keyword }}</span>
@@ -104,17 +109,22 @@ const tabs = [
   { label: '动态', value: '动态' }
 ]
 
+const { data: tags } = await useFetch('/api/tags', { key: 'tags-list' })
+
 const { data, pending } = await useFetch('/api/articles', {
   key: 'article-list',
   query: computed(() => ({
     page: route.query.page || 1,
     pageSize: 9,
     category: route.query.category || undefined,
-    keyword: route.query.keyword || undefined
+    keyword: route.query.keyword || undefined,
+    tag: route.query.tag || undefined
   }))
 })
 
-const showFeatured = computed(() => !route.query.category && !route.query.keyword && (data.value?.page || 1) === 1)
+const showFeatured = computed(
+  () => !route.query.category && !route.query.keyword && !route.query.tag && (data.value?.page || 1) === 1
+)
 const featured = computed(() => (showFeatured.value ? data.value?.list?.[0] : null))
 const rest = computed(() => (featured.value ? data.value.list.slice(1) : data.value?.list || []))
 

@@ -11,6 +11,7 @@ export default defineEventHandler((event) => {
     pageSize,
     category: query.category ? String(query.category) : '',
     keyword: query.keyword ? String(query.keyword) : '',
-    featured: query.featured ? String(query.featured) : ''
+    featured: query.featured ? String(query.featured) : '',
+    tag: query.tag ? String(query.tag) : ''
   })
 })

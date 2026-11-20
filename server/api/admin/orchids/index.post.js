@@ -8,11 +8,15 @@ export default defineEventHandler(async (event) => {
   }
 
   data.slug = makeSlug(data.slug || data.name, 'orchid')
+  if (body.tags !== undefined) data.tags = tagOps(body.tags)
 
   const orchid = await guard(() =>
     prisma.orchid.create({
       data,
-      include: { category: { select: { id: true, name: true } } }
+      include: {
+        category: { select: { id: true, name: true } },
+        tags: { select: { name: true, slug: true } }
+      }
     })
   )
 

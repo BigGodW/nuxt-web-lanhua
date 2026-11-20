@@ -46,9 +46,14 @@
         <p v-else class="mt-7 text-[13px] text-ink-light md:mt-9">正文正在整理中。</p>
 
         <div v-if="article.tags?.length" class="mt-8 flex flex-wrap gap-2 border-t border-[#E3DBC9]/70 pt-5 md:mt-10 md:pt-6">
-          <span v-for="tag in article.tags" :key="tag" class="border border-[#E3DBC9] px-3 py-1 text-[11px] text-ink-soft">
-            # {{ tag }}
-          </span>
+          <NuxtLink
+            v-for="tag in article.tags"
+            :key="tag.slug"
+            :to="`/articles?tag=${encodeURIComponent(tag.slug)}`"
+            class="border border-[#E3DBC9] px-3 py-1 text-[11px] text-ink-soft transition-colors hover:border-gold hover:text-jade-deep"
+          >
+            # {{ tag.name }}
+          </NuxtLink>
         </div>
 
         <div class="mt-6 flex flex-wrap items-center justify-between gap-4 md:mt-8">
@@ -108,6 +113,9 @@
         <ArticleCard v-for="item in article.related" :key="item.id" :article="item" />
       </div>
     </section>
+
+    <!-- 第三方平台 -->
+    <PlatformFollow />
 
     <ShareSheet
       v-model="shareOpen"

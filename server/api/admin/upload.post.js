@@ -18,6 +18,7 @@ const MAX_WIDTH = {
   orchid: 1600,
   article: 1600,
   category: 1200,
+  platform: 800,
   share: 1200
 }
 

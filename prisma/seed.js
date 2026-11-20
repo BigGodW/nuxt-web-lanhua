@@ -538,24 +538,29 @@ const banners = [
   }
 ]
 
+const platforms = [
+  { name: '抖音', note: '养兰日常与开箱分享', link: 'https://v.douyin.com/', sortOrder: 1, isActive: true },
+  { name: '微信公众号', note: '兰文化长文与上新通知', link: '', sortOrder: 2, isActive: true }
+]
+
 const settings = {
   siteName: '九畹',
   siteFullName: '九畹 · 国兰清赏',
   slogan: '一茎一花，香远益清',
   description:
-    '九畹国兰清赏，专注中国兰花（国兰）的品种整理与鉴赏普及，收录春兰、蕙兰、建兰、墨兰、寒兰、春剑、莲瓣兰等名品，并提供养护知识与兰文化文章。',
-  keywords: '国兰,春兰,蕙兰,建兰,墨兰,寒兰,兰花品种,兰花养护,兰文化',
+    '蜀杨兰园（九畹·国兰清赏）：成都郫都 30 余亩露天种植国兰基地，园主杨波系郫都区兰花协会会长，莳兰 30 余年。主营春兰、春剑、莲瓣兰、蕙兰、送秋绿等，涵盖入门款、精品名品与叶花多艺全系列品种，并提供养护知识与兰文化文章。',
+  keywords: '国兰,春兰,春剑,莲瓣兰,蕙兰,送秋绿,成都兰花基地,郫都兰花,多艺兰花,兰花养护,兰文化',
   about:
-    '九畹之名，取自屈原《离骚》“余既滋兰之九畹兮，又树蕙之百亩”。我们以兰为友，整理国兰名品谱系，记录瓣型、花期、香气与养护要点，也收录与兰相关的文化与生活。愿这一方小小的兰畹，能让更多人在喧嚣中闻到一缕清芬。',
-  contactPerson: '九畹编辑部',
-  phone: '0571-8888 6666',
+    '蜀杨兰园坐落于成都市郫都区蜀都国兰示范区，园主杨波先生系郫都区兰花协会会长，莳兰三十余年，是成都本地资深兰家。兰园现有超 30 亩露天种植基地，所有兰花均为自然种植、自然驯化，不经温室催花，草壮花实，气韵自然。主营春兰、春剑、莲瓣兰、蕙兰、送秋绿等品类，涵盖入门款、精品名品与叶花多艺等全系列品种。基地地址：四川省成都市郫都区蜀都国兰示范区 D1~D2（蜀杨兰园大自然种植基地）。欢迎各地兰友来园看草论花，以兰会友。',
+  contactPerson: '杨波（园主 · 郫都区兰花协会会长）',
+  phone: '028-8888 6666',
   email: 'hello@jiuwan-orchid.cn',
   wechat: 'jiuwan_orchid',
-  address: '浙江省杭州市西湖区兰苑路 9 号',
+  address: '四川省成都市郫都区蜀都国兰示范区 D1~D2（蜀杨兰园大自然种植基地）',
   icp: '浙ICP备2026000001号',
   copyright: '© 2026 九畹 · 国兰清赏　保留所有权利',
   footerNote: '本站图文仅用于国兰文化传播，部分品种资料参考《中国兰艺》及相关兰谱，欢迎兰友指正。',
-  statYears: '20',
+  statYears: '30',
   statVarieties: '120',
   statArticles: '80'
 }
@@ -587,10 +592,28 @@ async function main() {
   }
   console.log(`✓ 品类 ${categories.length} 条`)
 
+  /* 标签：独立成表，兰花与文章共用（connectOrCreate 保证重复标签只建一条） */
+  const tagCache = new Map()
+  async function findOrCreateTag(name) {
+    if (tagCache.has(name)) return tagCache.get(name)
+    const tag = await prisma.tag.upsert({
+      where: { name },
+      update: {},
+      create: { name, slug: name.trim().toLowerCase().replace(/\s+/g, '-').slice(0, 80) }
+    })
+    tagCache.set(name, tag)
+    return tag
+  }
+  async function tagConnect(names) {
+    const tags = []
+    for (const name of names || []) tags.push(await findOrCreateTag(name))
+    return { connect: tags.map((tag) => ({ id: tag.id })) }
+  }
+
   /* 品种 */
   for (const item of orchids) {
-    const { categorySlug, ...rest } = item
-    const data = { ...rest, categoryId: categoryMap[categorySlug] }
+    const { categorySlug, tags, ...rest } = item
+    const data = { ...rest, categoryId: categoryMap[categorySlug], tags: await tagConnect(tags) }
     await prisma.orchid.upsert({
       where: { slug: item.slug },
       update: data,
@@ -601,7 +624,8 @@ async function main() {
 
   /* 文章 */
   for (const item of articles) {
-    const data = { ...item, publishedAt: new Date(item.publishedAt) }
+    const { tags, ...rest } = item
+    const data = { ...rest, publishedAt: new Date(rest.publishedAt), tags: await tagConnect(tags) }
     await prisma.article.upsert({
       where: { slug: item.slug },
       update: data,
@@ -609,6 +633,12 @@ async function main() {
     })
   }
   console.log(`✓ 文章 ${articles.length} 条`)
+
+  /* 第三方平台（仅在为空时初始化，示例数据请到后台替换成真实链接与二维码） */
+  if ((await prisma.platform.count()) === 0) {
+    await prisma.platform.createMany({ data: platforms })
+    console.log(`✓ 第三方平台 ${platforms.length} 条`)
+  }
 
   /* 轮播（无唯一键，仅在为空时初始化） */
   if ((await prisma.banner.count()) === 0) {

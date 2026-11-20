@@ -24,6 +24,9 @@
 - 兰文：分类筛选、搜索、头条、上下篇、相关推荐
 - 关于：站点介绍、数据展示、联系方式
 - 分享：兰花详情与文章详情均支持微信好友 / 朋友圈 / 抖音 / 复制链接 / 生成二维码海报
+- 标签：`tags` 表独立存储，兰花与文章多对多；详情页/列表页标签可点击，按标签筛选对应内容；后台表单仍用逗号分隔输入，保存时自动 connectOrCreate
+- 第三方平台：`platforms` 表（名称/logo/二维码/链接/排序/启用），后台可增删改，关于页「我们的其他平台」区块展示
+- 移动端：右下角固定「拨打电话」按钮（`FloatingCall`），号码取站点设置的 `phone`，未设置时不显示
 - 404 定制页
 
 **管理后台**（`/admin`）
@@ -115,11 +118,13 @@ npm run dev            # http://localhost:3000
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
 | GET | `/api/home` | 首页聚合数据 |
-| GET | `/api/orchids` | 品种列表，支持 `category` `keyword` `featured` `page` |
+| GET | `/api/orchids` | 品种列表，支持 `category` `keyword` `featured` `tag` `page` |
+| GET | `/api/tags` | 全部标签（含兰花/文章数量），仅返回有已发布内容的标签 |
 | GET | `/api/orchids/:slug` | 品种详情（含同类推荐，浏览量 +1） |
 | GET | `/api/categories` | 品类列表（含品种数） |
 | GET | `/api/categories/:slug` | 品类详情 + 该品类品种 |
-| GET | `/api/articles` | 文章列表，支持 `category` `keyword` |
+| GET | `/api/articles` | 文章列表，支持 `category` `keyword` `tag` |
+| GET | `/api/platforms` | 第三方平台（启用中），关于页展示 |
 | GET | `/api/articles/:slug` | 文章详情（含上下篇、相关） |
 | GET | `/api/settings` | 站点配置（键值对象） |
 | POST | `/api/auth/login` | 登录 |

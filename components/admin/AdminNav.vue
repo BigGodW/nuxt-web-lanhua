@@ -30,6 +30,7 @@ const items = [
   { label: '品类管理', to: '/admin/categories', icon: 'apps-o' },
   { label: '文章管理', to: '/admin/articles', icon: 'notes-o' },
   { label: '轮播管理', to: '/admin/banners', icon: 'photo-o' },
+  { label: '第三方平台', to: '/admin/platforms', icon: 'link-o' },
   { label: '站点设置', to: '/admin/settings', icon: 'setting-o' }
 ]
 

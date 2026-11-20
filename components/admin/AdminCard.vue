@@ -4,7 +4,7 @@
       <div class="flex items-center gap-2.5">
         <span class="h-3.5 w-px bg-cinnabar" />
         <h2 class="font-song text-[15px] tracking-[0.12em] text-jade-deep">{{ title }}</h2>
-        <span v-if="hint" class="text-[11px] text-ink-light">{{ hint }}</span>
+        <span v-if="hint" class="text-[12px] text-ink-light">{{ hint }}</span>
       </div>
       <slot name="action" />
     </header>

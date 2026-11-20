@@ -80,13 +80,14 @@
           </dl>
 
           <div v-if="orchid.tags?.length" class="mt-4 flex flex-wrap gap-2 md:mt-5">
-            <span
+            <NuxtLink
               v-for="tag in orchid.tags"
-              :key="tag"
-              class="border border-[#E3DBC9] px-2.5 py-1 text-[11px] text-ink-soft"
+              :key="tag.slug"
+              :to="`/orchids?tag=${encodeURIComponent(tag.slug)}`"
+              class="border border-[#E3DBC9] px-2.5 py-1 text-[11px] text-ink-soft transition-colors hover:border-gold hover:text-jade-deep"
             >
-              # {{ tag }}
-            </span>
+              # {{ tag.name }}
+            </NuxtLink>
           </div>
 
           <!-- 手机端一行排布：两个文字按钮 + 一个图标按钮，省掉三行的高度 -->
@@ -149,6 +150,9 @@
         </aside>
       </div>
     </section>
+
+    <!-- 第三方平台 -->
+    <PlatformFollow />
 
     <ShareSheet
       v-model="shareOpen"

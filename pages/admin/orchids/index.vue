@@ -20,7 +20,7 @@
           <option value="published">已发布</option>
           <option value="draft">草稿</option>
         </select>
-        <span class="ml-auto hidden text-[11px] text-ink-light md:block">共 {{ data?.total || 0 }} 条</span>
+        <span class="ml-auto hidden text-[12px] text-ink-light md:block">共 {{ data?.total || 0 }} 条</span>
       </div>
 
       <div class="overflow-x-auto">
@@ -43,7 +43,7 @@
                   <SmartImage :src="row.cover" :alt="row.name" ratio="1 / 1" w="120" class="w-11 shrink-0" />
                   <div class="min-w-0">
                     <p class="font-song text-[13px] text-ink">{{ row.name }}</p>
-                    <p class="mt-0.5 truncate text-[11px] text-ink-light">{{ row.alias || row.slug }}</p>
+                    <p class="mt-0.5 truncate text-[12px] text-ink-light">{{ row.alias || row.slug }}</p>
                   </div>
                 </div>
               </td>
@@ -92,7 +92,7 @@
             <p class="font-song text-[16px] tracking-[0.12em] text-jade-deep">
               {{ form.id ? '编辑品种' : '新增品种' }}
             </p>
-            <p class="mt-0.5 text-[11px] text-ink-light">带 * 为必填项</p>
+            <p class="mt-0.5 text-[12px] text-ink-light">带 * 为必填项</p>
           </div>
           <button class="text-ink-light hover:text-cinnabar" @click="formOpen = false">
             <van-icon name="cross" size="18" />
@@ -175,7 +175,7 @@
               rows="10"
               placeholder="支持 HTML，如 <p>正文</p><h3>小标题</h3>"
             />
-            <p class="mt-1 text-[11px] text-ink-light">支持 &lt;p&gt;、&lt;h3&gt;、&lt;blockquote&gt;、&lt;ul&gt; 等基础标签</p>
+            <p class="mt-1 text-[12px] text-ink-light">支持 &lt;p&gt;、&lt;h3&gt;、&lt;blockquote&gt;、&lt;ul&gt; 等基础标签</p>
           </div>
 
           <div class="grid gap-4 sm:grid-cols-3">
@@ -194,7 +194,7 @@
               <label class="admin-label">首页推荐</label>
               <div class="flex h-[34px] items-center gap-2">
                 <van-switch v-model="form.isFeatured" size="18px" />
-                <span class="text-[11px] text-ink-light">{{ form.isFeatured ? '已推荐' : '不推荐' }}</span>
+                <span class="text-[12px] text-ink-light">{{ form.isFeatured ? '已推荐' : '不推荐' }}</span>
               </div>
             </div>
           </div>
@@ -289,7 +289,7 @@ function openForm(row = null) {
       fragrance: row.fragrance || '',
       difficulty: row.difficulty || '',
       light: row.light || '',
-      tagsText: (row.tags || []).join(', '),
+      tagsText: (row.tags || []).map((tag) => tag.name).join(', '),
       isFeatured: !!row.isFeatured,
       status: row.status,
       sortOrder: row.sortOrder || 0

@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
 
   return pagedList(prisma.article, {
     where,
+    include: { tags: { select: { name: true, slug: true }, orderBy: { id: 'asc' } } },
     orderBy: [{ isTop: 'desc' }, { publishedAt: 'desc' }],
     page,
     pageSize,

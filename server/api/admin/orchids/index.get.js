@@ -26,7 +26,10 @@ export default defineEventHandler(async (event) => {
 
   return pagedList(prisma.orchid, {
     where,
-    include: { category: { select: { id: true, name: true, slug: true } } },
+    include: {
+      category: { select: { id: true, name: true, slug: true } },
+      tags: { select: { name: true, slug: true }, orderBy: { id: 'asc' } }
+    },
     orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
     page,
     pageSize,

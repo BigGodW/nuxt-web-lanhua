@@ -10,9 +10,9 @@ generator client {
   //   报 "could not locate the Query Engine for runtime windows"。
   // 提交给 EdgeOne 构建时：可只留 ["rhel-openssl-1.1.x"]，产物小 21MB。
   // 切换后必须重跑 generate：停掉 nuxt dev → npx prisma generate → npm run dev
+  // 本地开发 + 部署通用写法：两套都带上（部署产物只多 21MB，但不用来回改）
   // binaryTargets = ["native", "rhel-openssl-1.1.x"]
-  // 部署到腾讯云配置
-  binaryTargets = [ "rhel-openssl-1.1.x"]
+  binaryTargets = ["rhel-openssl-1.1.x"]
 }
 
 datasource db {
@@ -67,7 +67,7 @@ model Orchid {
   fragrance  String?
   difficulty String?
   light      String?
-  tags       String[]
+  tags       Tag[] // 标签独立成表，多对多（迁移脚本会从旧 tags 字符串列搬过来）
   viewCount  Int      @default(0)
   isFeatured Boolean  @default(false)
   status     String   @default("published")
@@ -91,7 +91,7 @@ model Article {
   content     String?
   category    String   @default("兰文化")
   author      String   @default("九畹编辑部")
-  tags        String[]
+  tags        Tag[] // 标签独立成表，多对多
   viewCount   Int      @default(0)
   isTop       Boolean  @default(false)
   status      String   @default("published")
@@ -101,6 +101,36 @@ model Article {
 
   @@index([status])
   @@map("articles")
+}
+
+/// 标签：兰花与文章共用，可点击标签筛选对应内容
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slug      String   @unique
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orchids   Orchid[]
+  articles  Article[]
+
+  @@map("tags")
+}
+
+/// 第三方平台：抖音 / 微信公众号 / 淘宝 / 微店等外部渠道展示
+model Platform {
+  id        Int      @id @default(autoincrement())
+  name      String
+  logo      String?
+  qrCode    String?
+  link      String?
+  note      String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("platforms")
 }
 
 /// 首页轮播

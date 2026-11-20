@@ -27,9 +27,9 @@
               </td>
               <td class="admin-td">
                 <p class="font-song text-[13px] text-ink">{{ row.title }}</p>
-                <p class="mt-0.5 line-clamp-1 text-[11px] text-ink-light">{{ row.subtitle || '—' }}</p>
+                <p class="mt-0.5 line-clamp-1 text-[12px] text-ink-light">{{ row.subtitle || '—' }}</p>
               </td>
-              <td class="admin-td text-[11px]">{{ row.link || '—' }}</td>
+              <td class="admin-td text-[12px]">{{ row.link || '—' }}</td>
               <td class="admin-td">{{ row.sortOrder }}</td>
               <td class="admin-td">
                 <span class="status-badge" :class="row.isActive ? 'status-published' : 'status-draft'">
@@ -92,7 +92,7 @@
               <label class="admin-label">是否展示</label>
               <div class="flex h-[34px] items-center gap-2">
                 <van-switch v-model="form.isActive" size="18px" />
-                <span class="text-[11px] text-ink-light">{{ form.isActive ? '展示中' : '已隐藏' }}</span>
+                <span class="text-[12px] text-ink-light">{{ form.isActive ? '展示中' : '已隐藏' }}</span>
               </div>
             </div>
           </div>

@@ -4,6 +4,12 @@ export default defineEventHandler(async (event) => {
 
   required(data.title, '文章标题')
   data.slug = makeSlug(data.slug || data.title, 'article')
+  if (body.tags !== undefined) data.tags = tagOps(body.tags)
 
-  return guard(() => prisma.article.create({ data }))
+  return guard(() =>
+    prisma.article.create({
+      data,
+      include: { tags: { select: { name: true, slug: true } } }
+    })
+  )
 })

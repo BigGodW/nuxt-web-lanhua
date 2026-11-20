@@ -66,6 +66,55 @@
       </div>
     </section>
 
+    <!-- 第三方平台 -->
+    <section v-if="platforms?.length" class="container pb-2 md:pb-4">
+      <div class="border border-[#E3DBC9]/70 bg-paper-light/30 p-5 md:p-8">
+        <SectionTitle title="我们的其他平台" en="FOLLOW US" subtitle="在各平台搜索同名账号，或扫码直接进入。" />
+
+        <div class="mt-6 grid grid-cols-2 gap-4 md:mt-8 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+          <div
+            v-for="platform in platforms"
+            :key="platform.id"
+            class="group flex flex-col border border-[#E3DBC9] bg-paper p-4 transition-colors hover:border-gold/60"
+          >
+            <div class="flex items-center gap-3">
+              <SmartImage
+                v-if="platform.logo"
+                :src="platform.logo"
+                :alt="platform.name"
+                ratio="1 / 1"
+                w="120"
+                class="h-11 w-11 shrink-0"
+              />
+              <span v-else class="seal flex h-11 w-11 shrink-0 items-center justify-center text-[15px]">
+                {{ platform.name.slice(0, 1) }}
+              </span>
+              <div class="min-w-0">
+                <p class="truncate font-song text-[14px] tracking-[0.08em] text-jade-deep">{{ platform.name }}</p>
+                <p v-if="platform.note" class="mt-0.5 truncate text-[11px] text-ink-light">{{ platform.note }}</p>
+              </div>
+            </div>
+
+            <div v-if="platform.qrCode" class="mt-3 flex items-center gap-3">
+              <SmartImage :src="platform.qrCode" :alt="`${platform.name}二维码`" ratio="1 / 1" w="240" class="h-24 w-24 shrink-0" />
+              <p class="text-[11px] leading-5 text-ink-soft/70">扫码进入<br />{{ platform.name }}</p>
+            </div>
+
+            <a
+              v-if="platform.link"
+              :href="platform.link"
+              :target="platform.link.startsWith('/') ? undefined : '_blank'"
+              rel="noopener"
+              class="mt-3 inline-flex items-center gap-1.5 self-start border border-jade-deep/30 px-3 py-1.5 text-[11px] tracking-[0.15em] text-jade-deep transition-colors hover:border-jade-deep hover:bg-jade-deep hover:text-paper"
+            >
+              前往 {{ platform.name }}
+              <van-icon name="arrow" size="11" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 联系 -->
     <section class="container py-9 md:py-20">
       <div class="grid gap-7 md:grid-cols-[1fr_1fr] md:gap-16">
@@ -102,6 +151,8 @@
 import { cnNumber } from '~/utils/date'
 
 const site = useSite()
+
+const { data: platforms } = await useFetch('/api/platforms', { key: 'platforms-list' })
 
 const pillars = [
   {

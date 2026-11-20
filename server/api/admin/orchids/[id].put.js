@@ -9,12 +9,16 @@ export default defineEventHandler(async (event) => {
   if (data.name !== undefined) {
     required(data.name, '品种名称')
   }
+  if (body.tags !== undefined) data.tags = tagOps(body.tags)
 
   return guard(() =>
     prisma.orchid.update({
       where: { id },
       data,
-      include: { category: { select: { id: true, name: true } } }
+      include: {
+        category: { select: { id: true, name: true } },
+        tags: { select: { name: true, slug: true } }
+      }
     })
   )
 })

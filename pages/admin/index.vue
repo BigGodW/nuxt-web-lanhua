@@ -10,12 +10,12 @@
         <span class="absolute right-4 top-4 font-song text-[11px] tracking-[0.2em] text-gold/50">
           {{ cnNumber(index) }}
         </span>
-        <p class="text-[11px] tracking-[0.15em] text-ink-light">{{ item.label }}</p>
+        <p class="text-[12px] tracking-[0.15em] text-ink-light">{{ item.label }}</p>
         <p class="mt-3 font-song text-[30px] leading-none text-jade-deep">
           {{ item.value }}
-          <span class="ml-1 text-[11px] text-ink-light">{{ item.unit }}</span>
+          <span class="ml-1 text-[12px] text-ink-light">{{ item.unit }}</span>
         </p>
-        <p class="mt-2 text-[11px] text-ink-light">{{ item.hint }}</p>
+        <p class="mt-2 text-[12px] text-ink-light">{{ item.hint }}</p>
         <span class="absolute bottom-0 left-0 h-0.5 w-10 bg-cinnabar/70" />
       </div>
     </div>
@@ -24,14 +24,14 @@
       <!-- 最近品种 -->
       <AdminCard title="最近新增品种" hint="按创建时间">
         <template #action>
-          <NuxtLink to="/admin/orchids" class="text-[11px] text-ink-light hover:text-cinnabar">品种管理 →</NuxtLink>
+          <NuxtLink to="/admin/orchids" class="text-[12px] text-ink-light hover:text-cinnabar">品种管理 →</NuxtLink>
         </template>
 
         <div v-if="stats?.recentOrchids?.length" class="divide-y divide-[#E3DBC9]/70">
           <div v-for="item in stats.recentOrchids" :key="item.id" class="flex items-center justify-between gap-3 py-2.5">
             <div class="min-w-0">
               <p class="truncate font-song text-[13px] text-ink">{{ item.name }}</p>
-              <p class="mt-0.5 text-[11px] text-ink-light">{{ item.category?.name }} · {{ formatDate(item.createdAt) }}</p>
+              <p class="mt-0.5 text-[12px] text-ink-light">{{ item.category?.name }} · {{ formatDate(item.createdAt) }}</p>
             </div>
             <span class="status-badge" :class="item.status === 'published' ? 'status-published' : 'status-draft'">
               {{ item.status === 'published' ? '已发布' : '草稿' }}
@@ -44,14 +44,14 @@
       <!-- 最近文章 -->
       <AdminCard title="最近文章" hint="按发布时间">
         <template #action>
-          <NuxtLink to="/admin/articles" class="text-[11px] text-ink-light hover:text-cinnabar">文章管理 →</NuxtLink>
+          <NuxtLink to="/admin/articles" class="text-[12px] text-ink-light hover:text-cinnabar">文章管理 →</NuxtLink>
         </template>
 
         <div v-if="stats?.recentArticles?.length" class="divide-y divide-[#E3DBC9]/70">
           <div v-for="item in stats.recentArticles" :key="item.id" class="flex items-center justify-between gap-3 py-2.5">
             <div class="min-w-0">
               <p class="truncate font-song text-[13px] text-ink">{{ item.title }}</p>
-              <p class="mt-0.5 text-[11px] text-ink-light">{{ item.category }} · {{ formatDate(item.createdAt) }}</p>
+              <p class="mt-0.5 text-[12px] text-ink-light">{{ item.category }} · {{ formatDate(item.createdAt) }}</p>
             </div>
             <span class="status-badge" :class="item.status === 'published' ? 'status-published' : 'status-draft'">
               {{ item.status === 'published' ? '已发布' : '草稿' }}

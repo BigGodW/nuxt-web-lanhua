@@ -74,7 +74,7 @@
 
         
 
-        <NuxtLink to="/" class="mt-8 inline-flex items-center gap-2 text-[11px] tracking-[0.15em] text-ink-light hover:text-jade-deep">
+        <NuxtLink to="/" class="mt-8 inline-flex items-center gap-2 text-[12px] tracking-[0.15em] text-ink-light hover:text-jade-deep">
           <van-icon name="arrow-left" size="11" />
           返回网站首页
         </NuxtLink>

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-[#E3DBC9] px-4 py-3 text-[11px] text-ink-light">
+  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-[#E3DBC9] px-4 py-3 text-[12px] text-ink-light">
     <span>共 {{ total }} 条 · 第 {{ page }} / {{ totalPages }} 页</span>
     <div class="flex items-center gap-2">
       <button class="admin-btn-ghost" :disabled="page <= 1" @click="$emit('change', page - 1)">上一页</button>

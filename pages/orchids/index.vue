@@ -44,6 +44,11 @@
         </div>
       </div>
 
+      <!-- 标签筛选：点击任意标签查看带有该标签的兰花 -->
+      <div class="mt-4">
+        <TagFilter :tags="tags || []" :active="route.query.tag || ''" count-key="orchids" base-path="/orchids" />
+      </div>
+
       <div class="mt-4 flex items-center justify-between text-[11px] tracking-[0.1em] text-ink-light md:mt-5">
         <span>共 {{ data?.total || 0 }} 个品种</span>
         <span v-if="route.query.keyword" class="text-cinnabar/70">关键词：{{ route.query.keyword }}</span>
@@ -77,16 +82,18 @@ const router = useRouter()
 
 const keyword = ref(String(route.query.keyword || ''))
 
-// 品类与列表互不依赖，并行发起，避免两次串行等待
-const [{ data: categories }, { data, pending }] = await Promise.all([
+// 品类、标签与列表互不依赖，并行发起，避免串行等待
+const [{ data: categories }, { data: tags }, { data, pending }] = await Promise.all([
   useFetch('/api/categories', { key: 'categories-list' }),
+  useFetch('/api/tags', { key: 'tags-list' }),
   useFetch('/api/orchids', {
     key: 'orchid-list',
     query: computed(() => ({
       page: route.query.page || 1,
       pageSize: 12,
       category: route.query.category || undefined,
-      keyword: route.query.keyword || undefined
+      keyword: route.query.keyword || undefined,
+      tag: route.query.tag || undefined
     }))
   })
 ])

@@ -5,7 +5,10 @@ export default defineEventHandler(async (event) => {
   const data = await cached(`orchid:${slug}`, 2 * 60 * 1000, async () => {
     const orchid = await prisma.orchid.findFirst({
       where: { slug, status: 'published' },
-      include: { category: { select: { name: true, slug: true, subtitle: true } } }
+      include: {
+        category: { select: { name: true, slug: true, subtitle: true } },
+        tags: { select: { name: true, slug: true }, orderBy: { id: 'asc' } }
+      }
     })
 
     if (!orchid) {

@@ -7,5 +7,7 @@
     <SiteFooter />
     <!-- 手机端底部标签栏（桌面隐藏） -->
     <MobileTabBar />
+    <!-- 手机端右下角拨打电话按钮 -->
+    <FloatingCall />
   </div>
 </template>

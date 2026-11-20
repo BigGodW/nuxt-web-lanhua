@@ -392,8 +392,20 @@ body::before {
   background: #fcfaf4;
 }
 
+/* Toast 是 van-popup，会被上面的浅色底影响，单独恢复墨色深底 + 浅字 */
+.van-toast {
+  --van-toast-background: rgba(31, 42, 36, 0.92);
+  --van-toast-text-color: #fcfaf4;
+  background: rgba(31, 42, 36, 0.92);
+  color: #fcfaf4;
+}
+
+.van-toast__text {
+  color: #fcfaf4;
+}
+
 .van-empty__description {
-  color: var(--ink-light, #7a857e);
+  color: var(--ink-light, #5e6b62);
   font-size: 0.85rem;
 }
 
@@ -437,7 +449,7 @@ body::before {
 
 .admin-input::placeholder,
 .admin-textarea::placeholder {
-  color: #a9b0aa;
+  color: #7d857f;
 }
 
 .admin-textarea {

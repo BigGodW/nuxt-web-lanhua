@@ -24,7 +24,7 @@ module.exports = {
         ink: {
           DEFAULT: '#1E2A24',
           soft: '#46544C',
-          light: '#7A857E'
+          light: '#5E6B62'
         },
         jade: {
           DEFAULT: '#2F4A3F',
