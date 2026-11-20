@@ -5,7 +5,8 @@ import { uploadBuffer, cdnUrl } from '../../utils/qiniu'
 /**
  * 后台图片上传
  * POST /api/admin/upload?type=orchid&name=songmei
- * form-data: file=@xxx.jpg
+ * ① JSON: { base64: "data:image/jpeg;base64,...", name, type }（EdgeOne 环境推荐）
+ * ② form-data: file=@xxx.jpg（本地兼容）
  * 返回 { url, key, width, height, size }
  *
  * 服务端统一压缩（默认最长边 1600，JPEG q82），再传七牛，访问走 CDN。
@@ -23,21 +24,43 @@ const MAX_WIDTH = {
 }
 
 export default defineEventHandler(async (event) => {
-  const parts = await readMultipartFormData(event)
-  const file = (parts || []).find((part) => part.name === 'file' && part.data?.length)
+  const contentType = String(getHeader(event, 'content-type') || '')
+  const query = getQuery(event)
 
-  if (!file) {
+  let fileData
+  let mime
+  let name = ''
+  let requestedType = query.type
+
+  if (contentType.includes('application/json')) {
+    // 浏览器端压缩后以 base64 提交（EdgeOne Cloud Functions 对 multipart 二进制解析不可靠）
+    const body = (await readBody(event)) || {}
+    const value = String(body.base64 || '')
+    const matched = /^data:(image\/[a-z0-9.+-]+);base64,/i.exec(value)
+    mime = matched ? matched[1] : 'image/jpeg'
+    fileData = Buffer.from(matched ? value.slice(matched[0].length) : value, 'base64')
+    name = String(body.name || query.name || '')
+    requestedType = body.type || requestedType
+  } else {
+    // 兼容原有 multipart 上传
+    const parts = await readMultipartFormData(event)
+    const file = (parts || []).find((part) => part.name === 'file' && part.data?.length)
+    fileData = file?.data
+    mime = file?.type
+    name = String(file?.filename || query.name || '')
+  }
+
+  if (!fileData?.length) {
     throw createError({ statusCode: 400, message: '请选择要上传的图片' })
   }
-  if (file.data.length > MAX_BYTES) {
+  if (fileData.length > MAX_BYTES) {
     throw createError({ statusCode: 413, message: '图片不能超过 12MB' })
   }
-  if (!isAllowedImage(file.type)) {
+  if (!isAllowedImage(mime)) {
     throw createError({ statusCode: 415, message: '仅支持 JPG / PNG / WebP / GIF 图片' })
   }
 
-  const query = getQuery(event)
-  const type = String(query.type || 'misc')
+  const type = String(requestedType || 'misc')
     .toLowerCase()
     .replace(/[^a-z0-9-]/g, '')
     .slice(0, 16) || 'misc'
@@ -45,7 +68,7 @@ export default defineEventHandler(async (event) => {
 
   let compressed
   try {
-    compressed = await compressImage(file.data, { maxWidth, quality: 82 })
+    compressed = await compressImage(fileData, { maxWidth, quality: 82 })
   } catch (error) {
     throw createError({ statusCode: 400, message: `图片解析失败：${error.message}` })
   }
@@ -56,7 +79,7 @@ export default defineEventHandler(async (event) => {
   const dd = String(now.getDate()).padStart(2, '0')
   const rand = randomBytes(4).toString('hex')
 
-  const slug = String(query.name || '')
+  const slug = String(name)
     .toLowerCase()
     .replace(/\.[a-z0-9]+$/, '')
     .replace(/[^a-z0-9-]/g, '')

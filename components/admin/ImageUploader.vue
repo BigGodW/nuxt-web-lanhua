@@ -85,9 +85,13 @@ function removeAt(index) {
 }
 
 async function uploadOne(file) {
-  const form = new FormData()
-  form.append('file', file)
-  const result = await $fetch('/api/admin/upload', { method: 'POST', body: form, query: { type: props.type } })
+  // 先在浏览器压缩成 JPEG，再以 base64 JSON 提交，避免 EdgeOne 对 multipart 二进制的兼容问题
+  const maxWidth = { banner: 1920, orchid: 1600, article: 1600, category: 1200, platform: 800, share: 1200 }[props.type] || 1600
+  const { dataUrl } = await compressImageForUpload(file, maxWidth)
+  const result = await $fetch('/api/admin/upload', {
+    method: 'POST',
+    body: { base64: dataUrl, name: file.name, type: props.type }
+  })
   return result?.url || ''
 }
 

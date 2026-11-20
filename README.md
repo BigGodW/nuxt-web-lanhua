@@ -167,7 +167,9 @@ npm run dev            # http://localhost:3000
 
 ## 图片与 CDN
 
-上传链路：后台选择图片 → `POST /api/admin/upload` → **sharp 压缩**（按用途限制长边 1200～1920，JPEG q82、渐进式、去 EXIF、透明底压宣纸色）→ 七牛云 → 返回 CDN 地址。
+上传链路：后台选择图片 → 浏览器端压缩成 JPEG（`utils/image-client.js`，限制长边）→ `POST /api/admin/upload`（JSON/base64，兼容 multipart）→ **sharp 二次压缩**（按用途限制长边 1200～1920，JPEG q82、渐进式、去 EXIF、透明底压宣纸色）→ 七牛云 → 返回 CDN 地址。
+
+> EdgeOne Cloud Functions 对 multipart 二进制解析不可靠（sharp 报 `unsupported image format`），因此线上统一走 base64 JSON；请求体需控制在 Cloud Functions 6MB 限额内，浏览器端压缩即为此设计。
 
 访问链路：`composables/useImage.js` 对七牛图片自动追加 `?imageView2/2/w/{宽度}/format/webp/q/82`，列表缩略图只下载几十 KB；`composables/useShare.js` 对分享图改用 `format/jpg`（微信 / 抖音爬虫对 webp 支持一般）。
 
